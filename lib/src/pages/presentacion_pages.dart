@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:residuos/src/widgets/presentacion_cards.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
 
 class PresentacionPage extends StatelessWidget {
   const PresentacionPage({Key key}) : super(key: key);
@@ -53,6 +54,8 @@ class PresentacionPage extends StatelessWidget {
                           controller.animateTo(kIcons.length - 1);
                         } else {
                           Navigator.pushReplacementNamed(context, "login");
+                          SharedPreferencesClass.setPreference(
+                              "initScreen", 2); //Fija pantalla inicial a login
                         }
                       }
                     },

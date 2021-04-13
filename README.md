@@ -1,16 +1,34 @@
 # residuos
 
-A new Flutter project.
+Revisar
+https://material.io/components/data-tables/flutter#data-tables-information
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+##Comandos usados
 
-A few resources to get you started if this is your first Flutter project:
+##### Para actualizar icono de la app añadir libreria
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+~~~ 
+flutter pub pub add flutter_launcher_icons
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+~~~
+##### Para actualizar icono de la app cuando sea necesario cambiarlo
+
+~~~ 
+flutter pub run flutter_launcher_icons:main
+~~~
+
+##### Para instalar libreria responsiva
+
+~~~
+flutter pub pub add responsive_grid
+~~~
+##### Para instalar libreria datos persistentes
+
+~~~
+flutter pub pub add shared_preferences
+~~~
+
+###Compilar
+
+flutter build apk --split-per-abi

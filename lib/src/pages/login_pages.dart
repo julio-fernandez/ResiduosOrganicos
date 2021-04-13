@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:login/home_page.dart';
+// import 'package:residuos/src/models/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     final usuario = TextFormField(
       // keyboardType: TextInputType.,
       autofocus: false,
-      initialValue: 'Nombre',
+      // initialValue: 'Nombre',
       decoration: InputDecoration(
         hintText: 'Nombre Usuario',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final password = TextFormField(
       autofocus: false,
-      initialValue: 'contraseña',
+      // initialValue: 'contraseña',
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.all(Radius.circular(24))),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, "listaRecoleciones");
+          Navigator.pushNamed(context, "selectorTipo");
         },
         child: Padding(
           padding: EdgeInsets.all(12),
