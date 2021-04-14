@@ -11,13 +11,16 @@ import 'package:residuos/src/pages/agendarRecoleccion_page.dart';
 import 'package:residuos/src/pages/agendarRecolectores_page.dart';
 
 import 'package:residuos/src/pages/pruebas/tableExample_pages.dart';
+import 'package:residuos/src/pages/pruebas/pruebaApi_pages.dart';
 
 // import 'package:residuos/src/pages/pruebas/sh_preferencies_pages.dart';
 int initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // await prefs.setInt("initScreen", 12);
+  await prefs.setInt("initScreen", 2);
+  // await prefs.setInt("initScreen", 1);
+  // ignore: await_only_futures
   initScreen = await prefs.getInt("initScreen");
   print('initScreen $initScreen');
   runApp(MyApp());
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
         if (initScreen == 2) return "login";
         if (initScreen == 3) return "listaRecoleciones";
         if (initScreen == 3) return "listaRecolectores";
+        if (initScreen == 10) return "registro";
       }()),
       routes: {
         '/': (BuildContext context) => PresentacionPage(),
@@ -51,6 +55,7 @@ class MyApp extends StatelessWidget {
         'registro': (BuildContext context) => RegistroPage(),
         'selectorTipo': (BuildContext context) => SelectorTipoPage(),
         'tablaDemo': (BuildContext context) => DataTableDemo(),
+        'apiPage': (BuildContext context) => ApiPage(),
         'listaRecoleciones': (BuildContext context) => RecolecionesLista(),
         'listaRecolectores': (BuildContext context) => RecolectoresLista(),
         'agendarRecoleccionPage': (BuildContext context) =>

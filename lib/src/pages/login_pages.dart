@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:login/home_page.dart';
-// import 'package:residuos/src/models/shared_preferences.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:residuos/src/models/usuarios.dart';
+import 'package:residuos/src/variables/variables.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -9,6 +13,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //final _formKey = GlobalKey<FormState>();
+  TextEditingController txtControlerPwd = new TextEditingController();
+  TextEditingController txtControlerUsr = new TextEditingController();
+  // Future<Usuario> _usr;
+  String msjError = "";
+
+  Future<Usuario> _getUsuario(String usr, String pwd) async {
+    var url = Uri.http(ApiEndPointData.endPoint,
+        '${ApiEndPointData.validarUsuario}/$usr/$pwd');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      String body = convert.utf8.decode(response.bodyBytes);
+      if (body == "" || body.isEmpty) {
+        print("Usr vacio");
+        return null;
+      }
+      final jsonData = convert.jsonDecode(body);
+      int usuarioId = int.parse(jsonData["usuario_id"].toString());
+      String usrName = jsonData["usrName"];
+      String pwd = jsonData["pwd"];
+      String telefono = jsonData["telefono"];
+      int rol = int.parse(jsonData["rol"].toString());
+      Usuario usr = Usuario(usuarioId, usrName, pwd, telefono, rol);
+      print(jsonData);
+      return usr;
+    } else {
+      throw Exception("Fallo la conexion");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -23,7 +63,15 @@ class _LoginPageState extends State<LoginPage> {
     final usuario = TextFormField(
       // keyboardType: TextInputType.,
       autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor, ingresa tu nombre de usuario';
+        } else {
+          return null;
+        }
+      },
       // initialValue: 'Nombre',
+      controller: txtControlerUsr,
       decoration: InputDecoration(
         hintText: 'Nombre Usuario',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -33,7 +81,14 @@ class _LoginPageState extends State<LoginPage> {
 
     final password = TextFormField(
       autofocus: false,
-      // initialValue: 'contraseña',
+      controller: txtControlerPwd,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor, ingresa tu nombre de usuario';
+        } else {
+          return null;
+        }
+      },
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
@@ -51,8 +106,24 @@ class _LoginPageState extends State<LoginPage> {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(24))),
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, "selectorTipo");
+        onPressed: () async {
+          if (_validarTextField(txtControlerPwd.text) &&
+              _validarTextField(txtControlerUsr.text)) {
+            var usuario =
+                await _getUsuario(txtControlerUsr.text, txtControlerPwd.text);
+
+            if (usuario != null) {
+              msjError = "";
+              print("El usuario ${usuario.usrName} se ha logeado");
+              SharedPreferencesClass.setPreference("usuario", usuario);
+            } else {
+              msjError = ("Usuario y/o contraseña incorrectos");
+            }
+          } else {
+            msjError = "Por favor llene todos los campos";
+          }
+          setState(() {});
+          // Navigator.pushNamed(context, "selectorTipo");
         },
         child: Padding(
           padding: EdgeInsets.all(12),
@@ -87,6 +158,24 @@ class _LoginPageState extends State<LoginPage> {
             fontSize: 17,
           ),
         ));
+    final labelMensajeError = Container(
+        padding: EdgeInsets.only(top: 14.0, bottom: 14),
+        decoration: (() {
+          if (msjError == "" || msjError.isEmpty) {
+            return BoxDecoration();
+          } else {
+            return BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.red,
+            );
+          }
+        }()),
+        child: Text(
+          msjError,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
+        ));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -107,7 +196,9 @@ class _LoginPageState extends State<LoginPage> {
             labelcontra,
             SizedBox(height: 10.0),
             password,
-            SizedBox(height: 24.0),
+            SizedBox(height: 10.0),
+            labelMensajeError,
+            SizedBox(height: 10.0),
             loginButton,
             registrarse
           ],
@@ -115,4 +206,29 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  bool _validarTextField(String texto) {
+    if (texto.isEmpty) return false;
+    if (texto.trim().length == 0) return false;
+    // final numero = num.tryParse(texto);
+
+    return true;
+  }
+
+  // bool _verificarCredenciales(BuildContext context, String usr, String pwd) {
+  //   _usr = _getUsuario(usr, pwd);
+  //   print("Future inicio");
+  //   FutureBuilder(
+  //       future: _usr,
+  //       builder: (context, AsyncSnapshot<Usuario> snapshot) {
+  //         print("Algo paso");
+  //         if (snapshot.hasData) {
+  //           print("Funciona :) Bienvenido: ${snapshot.data.usrName}");
+  //         }
+  //         print("Error usr nulo");
+  //         return;
+  //       });
+
+  //   return false;
+  // }
 }

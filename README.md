@@ -29,6 +29,24 @@ flutter pub pub add responsive_grid
 flutter pub pub add shared_preferences
 ~~~
 
-###Compilar
-
+###Compilar app
+ 
+ ~~~
 flutter build apk --split-per-abi
+~~~
+
+###Instalar http
+~~~
+flutter pub pub add http
+~~~
+
+
+
+###Añadir a  android/app/src/main/AndroidManifest.xml
+~~~
+
+<application
+    ...
+    android:usesCleartextTraffic="true"
+    ...   >
+~~~

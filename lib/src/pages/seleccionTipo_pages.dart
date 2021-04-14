@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SelectorTipoPage extends StatelessWidget {
-  final TextEditingController txtUsuario = TextEditingController();
-  final TextEditingController txtPassword = TextEditingController();
+class SelectorTipoPage extends StatefulWidget {
+  @override
+  _SelectorTipoPageState createState() => _SelectorTipoPageState();
+}
+
+class _SelectorTipoPageState extends State<SelectorTipoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
