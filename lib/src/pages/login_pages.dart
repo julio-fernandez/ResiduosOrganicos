@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:login/home_page.dart';
+import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-import 'package:residuos/src/models/usuarios.dart';
-import 'package:residuos/src/variables/variables.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -18,31 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController txtControlerUsr = new TextEditingController();
   // Future<Usuario> _usr;
   String msjError = "";
-
-  Future<Usuario> _getUsuario(String usr, String pwd) async {
-    var url = Uri.http(ApiEndPointData.endPoint,
-        '${ApiEndPointData.validarUsuario}/$usr/$pwd');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      String body = convert.utf8.decode(response.bodyBytes);
-      if (body == "" || body.isEmpty) {
-        print("Usr vacio");
-        return null;
-      }
-      final jsonData = convert.jsonDecode(body);
-      int usuarioId = int.parse(jsonData["usuario_id"].toString());
-      String usrName = jsonData["usrName"];
-      String pwd = jsonData["pwd"];
-      String telefono = jsonData["telefono"];
-      int rol = int.parse(jsonData["rol"].toString());
-      Usuario usr = Usuario(usuarioId, usrName, pwd, telefono, rol);
-      print(jsonData);
-      return usr;
-    } else {
-      throw Exception("Fallo la conexion");
-    }
-  }
 
   @override
   void initState() {
@@ -109,13 +80,14 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           if (_validarTextField(txtControlerPwd.text) &&
               _validarTextField(txtControlerUsr.text)) {
-            var usuario =
-                await _getUsuario(txtControlerUsr.text, txtControlerPwd.text);
+            var usuario = await FuturosUsr.getUsuario(
+                txtControlerUsr.text, txtControlerPwd.text);
 
             if (usuario != null) {
               msjError = "";
               print("El usuario ${usuario.usrName} se ha logeado");
-              SharedPreferencesClass.setPreference("usuario", usuario);
+              await SharedPreferencesClass.setPreference(
+                  "usuario", usuario.toJson());
             } else {
               msjError = ("Usuario y/o contraseña incorrectos");
             }
@@ -214,21 +186,4 @@ class _LoginPageState extends State<LoginPage> {
 
     return true;
   }
-
-  // bool _verificarCredenciales(BuildContext context, String usr, String pwd) {
-  //   _usr = _getUsuario(usr, pwd);
-  //   print("Future inicio");
-  //   FutureBuilder(
-  //       future: _usr,
-  //       builder: (context, AsyncSnapshot<Usuario> snapshot) {
-  //         print("Algo paso");
-  //         if (snapshot.hasData) {
-  //           print("Funciona :) Bienvenido: ${snapshot.data.usrName}");
-  //         }
-  //         print("Error usr nulo");
-  //         return;
-  //       });
-
-  //   return false;
-  // }
 }

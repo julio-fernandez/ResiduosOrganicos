@@ -1,14 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-// import 'package:login/home_page.dart';
-// import 'package:residuos/src/models/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/shared_preferences.dart';
 import 'package:residuos/src/models/usuarios.dart';
-import 'dart:convert';
-
-import 'package:residuos/src/variables/variables.dart';
 
 class RegistroPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -23,21 +16,6 @@ class _RegistroPageState extends State<RegistroPage> {
   TextEditingController txtControlerPwd2 = new TextEditingController();
   TextEditingController txtControlerTelefono = new TextEditingController();
   static String msjError = '';
-
-  Future<http.Response> _createUser(Usuario usr) {
-    return http.post(
-      Uri.http(ApiEndPointData.endPoint, ApiEndPointData.usuarios),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "usrName": usr.usrName,
-        "pwd": usr.pwd,
-        "telefono": usr.telefono,
-        "rol": usr.rol.toString(),
-      }),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +121,16 @@ class _RegistroPageState extends State<RegistroPage> {
             String usrName = txtControlerUsr.text;
             String telefono = txtControlerTelefono.text;
             int rol = 0;
-            print(
-                "datos form usr:$usrName contra:$pwd telefono: $telefono rol: $rol");
             Usuario usr = Usuario(0, usrName, pwd, telefono, rol);
-            var httpResponse = await _createUser(usr);
+            var httpResponse = await FuturosUsr.createUser(usr);
             if (httpResponse.statusCode == 200) {
+              print(
+                  "Usuario registrdo form usr:$usrName contra:$pwd telefono: $telefono rol: $rol");
               msjError = "";
-              SharedPreferencesClass.setPreference("usuario", usuario);
+              await SharedPreferencesClass.setPreference(
+                  "usuario", usr.toJson());
+              print("Usuario creado :)");
+              print(usr);
               Navigator.of(context).pushNamed("selectorTipo");
             } else {
               print(
