@@ -85,9 +85,19 @@ class _LoginPageState extends State<LoginPage> {
 
             if (usuario != null) {
               msjError = "";
-              print("El usuario ${usuario.usrName} se ha logeado");
+              print("El usuario ${usuario.usrName}");
               await SharedPreferencesClass.setPreference(
                   "usuario", usuario.toJson());
+              if (usuario.rol == 1) {
+                print("se ha logeado  como usuario generador de residuos");
+                Navigator.pushNamed(context, "listaRecoleciones");
+              } else if (usuario.rol == 2) {
+                print("se ha logeado  como Recolector de residuos");
+                Navigator.pushNamed(context, "listaRecolectores");
+              } else if (usuario.rol == 0) {
+                print("se ha logeado  como sin rol");
+                Navigator.pushNamed(context, "selectorTipo");
+              }
             } else {
               msjError = ("Usuario y/o contraseña incorrectos");
             }
@@ -95,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
             msjError = "Por favor llene todos los campos";
           }
           setState(() {});
-          // Navigator.pushNamed(context, "selectorTipo");
+          //
         },
         child: Padding(
           padding: EdgeInsets.all(12),
@@ -153,6 +163,13 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Desechos organicos'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "presentacion");
+              })
+        ],
       ),
       body: Center(
         child: ListView(

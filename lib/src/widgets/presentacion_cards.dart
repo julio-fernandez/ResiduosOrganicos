@@ -81,15 +81,18 @@ class CardGuiaUno extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Solicita recoleccin",
+                      "Solicita recolección",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     )
                   ],
                 ),
-                Image.asset(
-                  "assets/img/planet-earth-green.png",
-                  width: 100,
+                Padding(
+                  padding: const EdgeInsets.only(left: 40),
+                  child: Image.asset(
+                    "assets/img/planet-earth-green.png",
+                    width: 100,
+                  ),
                 ),
               ],
             ),

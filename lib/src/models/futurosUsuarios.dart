@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:residuos/src/models/recolecciones.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
 import 'package:residuos/src/models/usuarios.dart';
 import 'package:residuos/src/variables/variables.dart';
 
@@ -130,6 +131,51 @@ class FuturosRecolec {
     } else {
       print("Error de conexion");
       throw Exception("Fallo la conexion");
+    }
+  }
+
+  static Future<List<Recolecciones>> getRecoleccionesByusuario() async {
+    print("Inicio futuro");
+    Usuario usr = Usuario.fromJson(
+        await SharedPreferencesClass.getPreferenceJsonOf("usuario"));
+    print("El nombre del usuario en el Future getRecoleccionesByusuario es");
+    print(usr.usrName);
+
+    var url = Uri.http(ApiEndPointData.endPoint,
+        '/api/recolecciones/usuario/${usr.usuarioId}');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print("Estado 200-getRecoleccionesByusuario");
+      String body = utf8.decode(response.bodyBytes);
+      if (body == "" || body.isEmpty) {
+        print("No existen recoleciones by usuario-getRecoleccionesByusuario");
+        return null;
+      }
+      print("Valor del body ---------");
+      print(body);
+      return null;
+      //   final jsonData = jsonDecode(body);
+      //   print("Valor usuario en data del Future");
+      //   print(jsonData);
+      //   List<Recolecciones> listRec = [];
+      //   int recoleccionid = int.parse(jsonData["recoleccion_id"]);
+      //   String direccion = jsonData["direccion"];
+      //   String fecha = jsonData["fecha"];
+      //   String repetir = jsonData["repetir"];
+      //   int usuarioid = int.parse(jsonData["usuario_id"]);
+      //   int recolectorid = int.parse(jsonData["recolector_id"]);
+
+      //   Recolecciones recol = Recolecciones(
+      //       recoleccionid, direccion, fecha, repetir, usuarioid, recolectorid);
+      //   print("Desde futuro valor usr");
+      //   print(jsonData);
+      //   listRec.add(recol);
+      //   return listRec;
+      // } else {
+      //   print("Error de conexion");
+      //   throw Exception("Fallo la conexion");
+    } else {
+      return null;
     }
   }
 }

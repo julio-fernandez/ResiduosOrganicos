@@ -13,7 +13,7 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
   @override
   void initState() {
     super.initState();
-    _listaRecol = FuturosRecolec.getRecolecciones();
+    _listaRecol = FuturosRecolec.getRecoleccionesByusuario();
   }
 
   Widget build(BuildContext context) {
@@ -27,32 +27,42 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
           FutureBuilder(
               future: _listaRecol,
               builder: (context, snapshot) {
+                print("Valor del future builder");
+                print(snapshot.data);
+                List<Recolecciones> reco = (snapshot.data);
+                print("¿Es nulo?");
+                print(reco == null ? true : false);
+                // print(snapshot == null ? true : false);
+
                 if (snapshot.hasData &&
                     snapshot.connectionState == ConnectionState.done) {
-                  List<_Row> rows = [];
-                  for (var item in snapshot.data) {
-                    rows.add(_Row(item.direccion, item.fecha, item.fecha,
-                        item.repetir, 'btn mod', 'btn eliminar'));
-                  }
-                  return PaginatedDataTable(
-                    header: Text('Recoleciones programadas'),
-                    rowsPerPage: 7,
-                    columnSpacing: 40,
-                    columns: [
-                      DataColumn(label: Text('Dirección')),
-                      DataColumn(label: Text('Fecha')),
-                      DataColumn(label: Text('Hora')),
-                      DataColumn(label: Text('Repetición')),
-                      DataColumn(label: Text('Modificar')),
-                      DataColumn(label: Text('Eliminar')),
-                    ],
-                    // source: _DataSource(context),
-                    source: _DataSource(context, rows),
-                  );
+                  //List<_Row> rows = [];
+
+                  print("El valor de snapshot.data en FutureBuilder es " +
+                      snapshot.data);
+                  // for (var item in snapshot.data) {
+                  //   rows.add(_Row(item.direccion, item.fecha, item.fecha,
+                  //       item.repetir, 'btn mod', 'btn eliminar'));
+                  // }
+                  return Text("null");
+                  // return PaginatedDataTable(
+                  //   header: Text('Recoleciones programadas'),
+                  //   rowsPerPage: 7,
+                  //   columnSpacing: 40,
+                  //   columns: [
+                  //     DataColumn(label: Text('Dirección')),
+                  //     DataColumn(label: Text('Fecha')),
+                  //     DataColumn(label: Text('Hora')),
+                  //     DataColumn(label: Text('Repetición')),
+                  //     DataColumn(label: Text('Modificar')),
+                  //     DataColumn(label: Text('Eliminar')),
+                  //   ],
+                  //   source: _DataSource(context, rows),
+                  // );
                 } else {
                   return Center(
                       child: Container(
-                          margin: EdgeInsets.only(top: 100),
+                          margin: EdgeInsets.only(top: 100, bottom: 200),
                           height: 200.0,
                           width: 200.0,
                           child: CircularProgressIndicator()));

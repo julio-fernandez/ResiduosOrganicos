@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         if (initScreen == null || initScreen == 1) return "/";
         if (initScreen == 2) return "login";
         if (initScreen == 3) return "listaRecoleciones";
-        if (initScreen == 3) return "listaRecolectores";
+        if (initScreen == 4) return "listaRecolectores";
         if (initScreen == 10) return "registro";
       }()),
       routes: {
