@@ -11,13 +11,23 @@ class AgendarRecoleccionPage extends StatefulWidget {
 }
 
 class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
+  TextEditingController txtControlerDireccion = new TextEditingController();
+  TextEditingController txtControlerFecha = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final direccion = TextFormField(
       // keyboardType: TextInputType.,
       autofocus: false,
-      initialValue: 'Nombre',
       maxLines: 3,
+      controller: txtControlerDireccion,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor, ingresa tu contraseña de usuario';
+        } else {
+          return null;
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Nombre Usuario',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -25,12 +35,19 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       ),
     );
 
-    final password = TextFormField(
+    final fecha = TextFormField(
       autofocus: false,
-      initialValue: 'contraseña',
-      obscureText: true,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Por favor, ingresa tu contraseña de usuario';
+        } else {
+          return null;
+        }
+      },
+      controller: txtControlerFecha,
+      keyboardType: TextInputType.datetime,
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: '2021-01-01 13:00:00',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -74,7 +91,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             SizedBox(height: 8.0),
             label("Fecha"),
             SizedBox(height: 10.0),
-            password,
+            fecha,
             SizedBox(height: 10.0),
             _radio("unaVez", "Unica vez"),
             _radio("diario", "Recolectar diariamente"),
@@ -119,6 +136,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       onChanged: (value) {
         setState(() {
           grupo = value;
+          print("valor grupo cmb agrec" + grupo);
           // mensaje = "La carrera seleccionada es: ";
         });
       },

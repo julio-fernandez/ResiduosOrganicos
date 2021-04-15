@@ -31,46 +31,62 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                 print(snapshot.data);
                 List<Recolecciones> reco = (snapshot.data);
                 print("¿Es nulo?");
-                print(reco == null ? true : false);
-                // print(snapshot == null ? true : false);
+                bool isnullRec = reco == null ? true : false;
+                print(isnullRec);
+                if (!isnullRec) {
+                  if (snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    //List<_Row> rows = [];
 
-                if (snapshot.hasData &&
-                    snapshot.connectionState == ConnectionState.done) {
-                  //List<_Row> rows = [];
-
-                  print("El valor de snapshot.data en FutureBuilder es " +
-                      snapshot.data);
-                  // for (var item in snapshot.data) {
-                  //   rows.add(_Row(item.direccion, item.fecha, item.fecha,
-                  //       item.repetir, 'btn mod', 'btn eliminar'));
-                  // }
-                  return Text("null");
-                  // return PaginatedDataTable(
-                  //   header: Text('Recoleciones programadas'),
-                  //   rowsPerPage: 7,
-                  //   columnSpacing: 40,
-                  //   columns: [
-                  //     DataColumn(label: Text('Dirección')),
-                  //     DataColumn(label: Text('Fecha')),
-                  //     DataColumn(label: Text('Hora')),
-                  //     DataColumn(label: Text('Repetición')),
-                  //     DataColumn(label: Text('Modificar')),
-                  //     DataColumn(label: Text('Eliminar')),
-                  //   ],
-                  //   source: _DataSource(context, rows),
-                  // );
+                    print("El valor de snapshot.data en FutureBuilder es " +
+                        snapshot.data);
+                    // for (var item in snapshot.data) {
+                    //   rows.add(_Row(item.direccion, item.fecha, item.fecha,
+                    //       item.repetir, 'btn mod', 'btn eliminar'));
+                    // }
+                    return Text("null");
+                    // return PaginatedDataTable(
+                    //   header: Text('Recoleciones programadas'),
+                    //   rowsPerPage: 7,
+                    //   columnSpacing: 40,
+                    //   columns: [
+                    //     DataColumn(label: Text('Dirección')),
+                    //     DataColumn(label: Text('Fecha')),
+                    //     DataColumn(label: Text('Hora')),
+                    //     DataColumn(label: Text('Repetición')),
+                    //     DataColumn(label: Text('Modificar')),
+                    //     DataColumn(label: Text('Eliminar')),
+                    //   ],
+                    //   source: _DataSource(context, rows),
+                    // );
+                  } else {
+                    return Center(
+                        child: Container(
+                            margin: EdgeInsets.only(top: 100, bottom: 200),
+                            height: 200.0,
+                            width: 200.0,
+                            child: CircularProgressIndicator()));
+                  }
                 } else {
-                  return Center(
-                      child: Container(
-                          margin: EdgeInsets.only(top: 100, bottom: 200),
-                          height: 200.0,
-                          width: 200.0,
-                          child: CircularProgressIndicator()));
+                  return Container(
+                    height: 500,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No existen recoleciones programadas agenda alguna",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25, color: Colors.black87),
+                        )
+                      ],
+                    ),
+                  );
                 }
               }),
           ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "agendarRecolectoresPage");
+                Navigator.pushNamed(context, "agendarRecoleccionPage");
               },
               child: Text("Agendar Recolección")),
         ],
