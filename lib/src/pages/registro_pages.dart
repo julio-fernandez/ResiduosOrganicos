@@ -121,8 +121,9 @@ class _RegistroPageState extends State<RegistroPage> {
             String usrName = txtControlerUsr.text;
             String telefono = txtControlerTelefono.text;
             int rol = 0;
-            Usuario usr = Usuario(0, usrName, pwd, telefono, rol);
+            Usuario usr = Usuario(0, usrName, pwd, telefono, rol, 0, 0);
             var httpResponse = await FuturosUsr.createUser(usr);
+            print("httpResponse.statusCode  = ${httpResponse.statusCode}");
             if (httpResponse.statusCode == 200) {
               print(
                   "Usuario registrdo form usr:$usrName contra:$pwd telefono: $telefono rol: $rol");
@@ -132,6 +133,8 @@ class _RegistroPageState extends State<RegistroPage> {
               print("Usuario creado :)");
               print(usr);
               Navigator.of(context).pushNamed("selectorTipo");
+            } else if (httpResponse.statusCode == 466) {
+              msjError = "El usuario ya existe";
             } else {
               print(
                   "El status del registrar usuario = ${httpResponse.statusCode}");

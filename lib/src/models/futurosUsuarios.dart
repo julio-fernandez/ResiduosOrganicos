@@ -17,6 +17,8 @@ class FuturosUsr {
         "pwd": usr.pwd,
         "telefono": usr.telefono,
         "rol": usr.rol.toString(),
+        "puntuacionUsr": usr.puntuacionUsr.toString(),
+        "puntuacionRec": usr.puntuacionRec.toString(),
       }),
     );
   }
@@ -33,6 +35,8 @@ class FuturosUsr {
         "pwd": usr.pwd,
         "telefono": usr.telefono,
         "rol": usr.rol.toString(),
+        "puntuacionUsr": usr.puntuacionUsr.toString(),
+        "puntuacionRec": usr.puntuacionRec.toString(),
       }),
     );
   }
@@ -54,7 +58,11 @@ class FuturosUsr {
       String pwd = jsonData["pwd"];
       String telefono = jsonData["telefono"];
       int rol = int.parse(jsonData["rol"].toString());
-      Usuario usr = Usuario(usuarioId, usrName, pwd, telefono, rol);
+      int puntuacionUsr = int.parse(jsonData["puntuacionUsr"].toString());
+      int puntuacionRec = int.parse(jsonData["puntuacionRec"].toString());
+      Usuario usr = Usuario(
+          usuarioId, usrName, pwd, telefono, rol, puntuacionUsr, puntuacionRec);
+      print("Rol del usuario logado = $rol");
       print(jsonData);
       return usr;
     } else {
