@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:residuos/main.dart';
 
 // import 'package:login/home_page.dart';
 String grupo = "tiempo";
@@ -12,7 +14,12 @@ class AgendarRecoleccionPage extends StatefulWidget {
 
 class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
   TextEditingController txtControlerDireccion = new TextEditingController();
-  TextEditingController txtControlerFecha = new TextEditingController();
+  String msjError = "";
+  String msjFecha = "Seleccionar fecha";
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +42,45 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       ),
     );
 
-    final fecha = TextFormField(
-      autofocus: false,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Por favor, ingresa tu contraseña de usuario';
-        } else {
-          return null;
-        }
-      },
-      controller: txtControlerFecha,
-      keyboardType: TextInputType.datetime,
-      decoration: InputDecoration(
-        hintText: '2021-01-01 13:00:00',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
+    final fecha = OutlinedButton(
+        onPressed: () {
+          DatePicker.showDateTimePicker(context,
+              showTitleActions: true,
+              theme: DatePickerTheme(
+                  headerColor: Colors.green,
+                  // backgroundColor: Colors.black,
+                  itemStyle: TextStyle(
+                      color: Colors.black,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                  doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
+              onChanged: (date) {
+            String dfecha = 'change $date in time zone ' +
+                date.timeZoneOffset.inHours.toString();
+            print(dfecha);
+          }, onConfirm: (date) {
+            setState(() {});
+            int anio = date.year;
+            int mes = date.month;
+            int dia = date.day;
+            int hora = date.hour;
+            int minutos = date.minute;
+            msjFecha = ('$anio-$mes-$dia $hora:$minutos');
+            print(msjFecha);
+          }, currentTime: DateTime.now(), locale: LocaleType.es);
+        },
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
+          side: BorderSide(color: Colors.grey),
+        ),
+        child: Text(
+          msjFecha,
+          style: TextStyle(color: Colors.grey, fontSize: 14),
+        ));
 
-    final loginButton = Padding(
+    final agendarButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -63,7 +90,14 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
               borderRadius: BorderRadius.all(Radius.circular(24))),
         ),
         onPressed: () {
-          Navigator.pop(context);
+          bool camposVacios = !(_validarTextField(txtControlerDireccion.text));
+          if (camposVacios) {
+            msjError = "Por favor llene todos los campos";
+          } else {
+            msjError = "Validacion pendiente";
+          }
+          setState(() {});
+          // Navigator.pop(context);
         },
         child: Padding(
           padding: EdgeInsets.all(12),
@@ -71,6 +105,25 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
         ),
       ),
     );
+
+    final labelMensajeError = Container(
+        padding: EdgeInsets.only(top: 14.0, bottom: 14),
+        decoration: (() {
+          if (msjError == "" || msjError.isEmpty) {
+            return BoxDecoration();
+          } else {
+            return BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.red,
+            );
+          }
+        }()),
+        child: Text(
+          msjError,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
+        ));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -97,8 +150,9 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             _radio("diario", "Recolectar diariamente"),
             _radio("semanal", "Recolectar semanalmente"),
             _radio("mensual", "Recolectar Mensualmente"),
-            SizedBox(height: 24.0),
-            loginButton,
+            labelMensajeError,
+            SizedBox(height: 0.0),
+            agendarButton,
           ],
         ),
       ),
@@ -142,4 +196,10 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       },
     );
   }
+}
+
+bool _validarTextField(String texto) {
+  if (texto.isEmpty) return false;
+  if (texto.trim().length == 0) return false;
+  return true;
 }

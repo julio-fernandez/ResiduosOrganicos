@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:residuos/src/pages/pruebas/pruebaDatePicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:residuos/src/pages/login_pages.dart';
@@ -18,8 +19,8 @@ int initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setInt("initScreen", 2);
-  // await prefs.setInt("initScreen", 1);
+  // await prefs.setInt("initScreen", 2);
+  await prefs.setInt("initScreen", 10);
   // ignore: await_only_futures
   initScreen = await prefs.getInt("initScreen");
   print('initScreen $initScreen');
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         if (initScreen == 2) return "login";
         if (initScreen == 3) return "listaRecoleciones";
         if (initScreen == 4) return "listaRecolectores";
-        if (initScreen == 10) return "registro";
+        if (initScreen == 10) return "agendarRecoleccionPage";
       }()),
       routes: {
         '/': (BuildContext context) => PresentacionPage(),
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         'registro': (BuildContext context) => RegistroPage(),
         'selectorTipo': (BuildContext context) => SelectorTipoPage(),
         'tablaDemo': (BuildContext context) => DataTableDemo(),
+        'dateTime': (BuildContext context) => DateTimePicker(),
         'apiPage': (BuildContext context) => ApiPage(),
         'listaRecoleciones': (BuildContext context) => RecolecionesLista(),
         'listaRecolectores': (BuildContext context) => RecolectoresLista(),
