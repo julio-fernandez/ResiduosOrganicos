@@ -32,7 +32,7 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
                       var httpResponse = await FuturosUsr.updateUser(usr);
                       if (httpResponse.statusCode == 200) {
                         SharedPreferencesClass.setPreference("usuario", usr);
-                        Navigator.pushNamed(context, "listaRecoleciones");
+                        Navigator.pushReplacementNamed(context, "login");
                       } else {
                         print("ERROR cambiarRol");
                       }
@@ -72,7 +72,7 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
                     var httpResponse = await FuturosUsr.updateUser(usr);
                     if (httpResponse.statusCode == 200) {
                       SharedPreferencesClass.setPreference("usuario", usr);
-                      Navigator.pushNamed(context, "listaRecolectores");
+                      Navigator.pushReplacementNamed(context, "login");
                     } else {
                       print("ERROR cambiarRol");
                     }

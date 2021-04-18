@@ -36,29 +36,36 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                 if (!isnullRec) {
                   if (snapshot.hasData &&
                       snapshot.connectionState == ConnectionState.done) {
-                    //List<_Row> rows = [];
+                    List<_Row> rows = [];
 
-                    print("El valor de snapshot.data en FutureBuilder es " +
-                        snapshot.data);
-                    // for (var item in snapshot.data) {
-                    //   rows.add(_Row(item.direccion, item.fecha, item.fecha,
-                    //       item.repetir, 'btn mod', 'btn eliminar'));
-                    // }
-                    return Text("null");
-                    // return PaginatedDataTable(
-                    //   header: Text('Recoleciones programadas'),
-                    //   rowsPerPage: 7,
-                    //   columnSpacing: 40,
-                    //   columns: [
-                    //     DataColumn(label: Text('Dirección')),
-                    //     DataColumn(label: Text('Fecha')),
-                    //     DataColumn(label: Text('Hora')),
-                    //     DataColumn(label: Text('Repetición')),
-                    //     DataColumn(label: Text('Modificar')),
-                    //     DataColumn(label: Text('Eliminar')),
-                    //   ],
-                    //   source: _DataSource(context, rows),
-                    // );
+                    for (var item in snapshot.data) {
+                      rows.add(_Row(
+                          item.direccion,
+                          item.fechade,
+                          item.fechahasta,
+                          item.cantidad,
+                          item.descripcion,
+                          item.repetir,
+                          'btn mod',
+                          'btn eliminar'));
+                    }
+
+                    return PaginatedDataTable(
+                      header: Text('Recoleciones programadas'),
+                      rowsPerPage: 7,
+                      columnSpacing: 40,
+                      columns: [
+                        DataColumn(label: Text('Dirección')),
+                        DataColumn(label: Text('Fecha de')),
+                        DataColumn(label: Text('limite')),
+                        DataColumn(label: Text('cantidad')),
+                        DataColumn(label: Text('descripción')),
+                        DataColumn(label: Text('Repetición')),
+                        DataColumn(label: Text('Modificar')),
+                        DataColumn(label: Text('Eliminar')),
+                      ],
+                      source: _DataSource(context, rows),
+                    );
                   } else {
                     return Center(
                         child: Container(
@@ -68,25 +75,18 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                             child: CircularProgressIndicator()));
                   }
                 } else {
-                  return Container(
-                    height: 500,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "No existen recoleciones programadas agenda alguna",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 25, color: Colors.black87),
-                        )
-                      ],
-                    ),
-                  );
+                  return Center(
+                      child: Container(
+                          margin: EdgeInsets.only(top: 100),
+                          height: 200.0,
+                          width: 200.0,
+                          child: CircularProgressIndicator()));
                 }
               }),
           ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "agendarRecoleccionPage");
+                Navigator.pushNamed(context, "agendarRecoleccionPage")
+                    .then((value) => setState(() {}));
               },
               child: Text("Agendar Recolección")),
         ],
@@ -103,6 +103,8 @@ class _Row {
     this.valueD,
     this.valueE,
     this.valueF,
+    this.valueG,
+    this.valueH,
   );
 
   final String valueA;
@@ -111,6 +113,8 @@ class _Row {
   final String valueD;
   final String valueE;
   final String valueF;
+  final String valueG;
+  final String valueH;
 
   bool selected = false;
 }
@@ -148,6 +152,8 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueD)),
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
+        DataCell(Text(row.valueG)),
+        DataCell(Text(row.valueH)),
       ],
     );
   }

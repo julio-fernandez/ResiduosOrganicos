@@ -177,29 +177,39 @@ class FuturosRecolec {
       }
       print("Valor del body ---------");
       print(body);
-      return null;
-      //   final jsonData = jsonDecode(body);
-      //   print("Valor usuario en data del Future");
-      //   print(jsonData);
-      //   List<Recolecciones> listRec = [];
-      //   int recoleccionid = int.parse(jsonData["recoleccion_id"]);
-      //   String direccion = jsonData["direccion"];
-      //   String fecha = jsonData["fecha"];
-      //   String repetir = jsonData["repetir"];
-      //   int usuarioid = int.parse(jsonData["usuario_id"]);
-      //   int recolectorid = int.parse(jsonData["recolector_id"]);
+      //return null;
+      final jsonData = jsonDecode(body);
+      print("Valor usuario en data del Future");
+      print(jsonData);
+      List<Recolecciones> listRec = [];
 
-      //   Recolecciones recol = Recolecciones(
-      //       recoleccionid, direccion, fecha, repetir, usuarioid, recolectorid);
-      //   print("Desde futuro valor usr");
-      //   print(jsonData);
-      //   listRec.add(recol);
-      //   return listRec;
-      // } else {
-      //   print("Error de conexion");
-      //   throw Exception("Fallo la conexion");
+      for (var item in jsonData) {
+        int recoleccionid = int.parse(item["recoleccion_id"]);
+        String direccion = item["direccion"];
+        String fechade = item["fechade"];
+        String fechahasta = item["fechahasta"];
+        String cantidad = item["cantidad"];
+        String descripcion = item["descripcion"];
+        String repetir = item["repetir"];
+        int usuarioid = int.parse(item["usuario_id"]);
+        int recolectorid = int.parse(item["recolector_id"]);
+        Recolecciones recol = Recolecciones(
+            recoleccionid,
+            direccion,
+            fechade,
+            fechahasta,
+            cantidad,
+            descripcion,
+            repetir,
+            usuarioid,
+            recolectorid);
+        print(item);
+        listRec.add(recol);
+      }
+      return listRec;
     } else {
-      return null;
+      print("Error de conexion");
+      throw Exception("Fallo la conexion");
     }
   }
 }
