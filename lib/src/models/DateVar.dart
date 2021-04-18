@@ -5,7 +5,7 @@ class DateVar {
   int hora;
   int minuto;
 
-  DateVar.vacio() {}
+  DateVar.vacio();
 
   DateVar(anio, mes, dia, hora, minuto) {
     this.anio = anio;

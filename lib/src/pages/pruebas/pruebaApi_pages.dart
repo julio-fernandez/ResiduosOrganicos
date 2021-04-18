@@ -1,58 +1,137 @@
 // import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert' as convert;
-// import 'package:residuos/src/models/usuarios.dart';
+// import 'package:residuos/src/models/futurosUsuarios.dart';
+// import 'package:residuos/src/models/recolecciones.dart';
 
-// class ApiPage extends StatefulWidget {
+// class RecolectoresLista extends StatefulWidget {
 //   @override
-//   _ApiPageState createState() => _ApiPageState();
+//   _RecolectoresListaState createState() => _RecolectoresListaState();
 // }
 
-// class _ApiPageState extends State<ApiPage> {
-//   // ignore: unused_field
-//   Future<List<Usuario>> _listaUsuarios;
-
-//   Future<List<Usuario>> _getUsuarios() async {
-//     var url = Uri.http('192.168.0.34:3000', '/');
-//     // var url =
-//     //     Uri.https('www.googleapis.com', '/books/v1/volumes', {'q': '{http}'});
-//     final response = await http.get(url);
-
-//     List<Usuario> usuarios = [];
-
-//     if (response.statusCode == 200) {
-//       String body = convert.utf8.decode(response.bodyBytes);
-//       final jsonData = convert.jsonDecode(body);
-//       for (var item in jsonData) {
-//         int usuarioId = int.parse(item["usuario_id"].toString());
-//         String usrName = item["usrName"];
-//         String pwd = item["pwd"];
-//         String telefono = item["telefono"];
-//         int rol = int.parse(item["rol"].toString());
-//         Usuario usr = Usuario(usuarioId, usrName, pwd, telefono, rol);
-//         usuarios.add(usr);
-//         print(item);
-//       }
-//       return usuarios;
-//     } else {
-//       throw Exception("Fallo la conexion");
-//     }
-//   }
+// class _RecolectoresListaState extends State<RecolectoresLista> {
+//   Future<List<Recolecciones>> _listaRecol;
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     _listaUsuarios = _getUsuarios();
+//     _listaRecol = FuturosRecolec.getRecolecciones();
 //   }
 
-//   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text("API"),
-//         centerTitle: true,
+//         title: Text('Desechos organicos'),
 //       ),
-//       body: Text("API"),
+//       body: ListView(
+//         padding: const EdgeInsets.all(16),
+//         children: [
+//           FutureBuilder(
+//               future: _listaRecol,
+//               builder: (context, snapshot) {
+//                 if (snapshot.hasData &&
+//                     snapshot.connectionState == ConnectionState.done) {
+//                   List<_Row> rows = [];
+//                   for (var item in snapshot.data) {
+//                     rows.add(_Row(item.direccion, item.fechade, item.fechahasta,
+//                         item.repetir, 'btn mod', 'btn eliminar'));
+//                   }
+//                   return PaginatedDataTable(
+//                     header: Text('Lista de usuarios que se recolectaran'),
+//                     rowsPerPage: 7,
+//                     columnSpacing: 40,
+//                     columns: [
+//                       DataColumn(label: Text('Dirección')),
+//                       DataColumn(label: Text('FechaDe')),
+//                       DataColumn(label: Text('FechaHasta')),
+//                       DataColumn(label: Text('Repetición')),
+//                       DataColumn(label: Text('Modificar')),
+//                       DataColumn(label: Text('Eliminar')),
+//                     ],
+//                     // source: _DataSource(context),
+//                     source: _DataSource(context, rows),
+//                   );
+//                 } else {
+//                   return Center(
+//                       child: Container(
+//                           margin: EdgeInsets.only(top: 100),
+//                           height: 200.0,
+//                           width: 200.0,
+//                           child: CircularProgressIndicator()));
+//                 }
+//               }),
+//           ElevatedButton(
+//               onPressed: () {
+//                 Navigator.pushNamed(context, "agendarRecolectoresPage");
+//               },
+//               child: Text("Agendar Recolección")),
+//         ],
+//       ),
 //     );
 //   }
+// }
+
+// class _Row {
+//   _Row(
+//     this.valueA,
+//     this.valueB,
+//     this.valueC,
+//     this.valueD,
+//     this.valueE,
+//     this.valueF,
+//   );
+
+//   final String valueA;
+//   final String valueB;
+//   final String valueC;
+//   final String valueD;
+//   final String valueE;
+//   final String valueF;
+
+//   bool selected = false;
+// }
+
+// class _DataSource extends DataTableSource {
+//   _DataSource(this.context, List<_Row> datos) {
+//     _rows = datos;
+//   }
+
+//   final BuildContext context;
+//   List<_Row> _rows;
+
+//   int _selectedCount = 0;
+
+//   @override
+//   DataRow getRow(int index) {
+//     assert(index >= 0);
+//     if (index >= _rows.length) return null;
+//     final row = _rows[index];
+//     return DataRow.byIndex(
+//       index: index,
+//       selected: row.selected,
+//       // onSelectChanged: (value) {
+//       //   if (row.selected != value) {
+//       //     _selectedCount += value ? 1 : -1;
+//       //     assert(_selectedCount >= 0);
+//       //     row.selected = value;
+//       //     notifyListeners();
+//       //   }
+//       // },
+//       cells: [
+//         DataCell(Text(row.valueA)),
+//         DataCell(Text(row.valueB)),
+//         DataCell(Text(row.valueC)),
+//         DataCell(Text(row.valueD)),
+//         DataCell(Text(row.valueE)),
+//         DataCell(Text(row.valueF)),
+//       ],
+//     );
+//   }
+
+//   @override
+//   int get rowCount => _rows.length;
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get selectedRowCount => _selectedCount;
 // }
