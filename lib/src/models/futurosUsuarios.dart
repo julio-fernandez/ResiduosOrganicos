@@ -79,9 +79,11 @@ class FuturosRecolec {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "recoleccionid": rec.recoleccionid.toString(),
         "direccion": rec.direccion,
-        "fecha": rec.fecha,
+        "fechade": rec.fechade,
+        "fechahasta": rec.fechahasta,
+        "cantidad": rec.cantidad,
+        "descripcion": rec.descripcion,
         "repetir": rec.repetir,
         "usuarioid": rec.usuarioid.toString(),
         "recolectorid": rec.recolectorid.toString(),
@@ -100,7 +102,10 @@ class FuturosRecolec {
       body: jsonEncode(<String, String>{
         "recoleccionid": rec.recoleccionid.toString(),
         "direccion": rec.direccion,
-        "fecha": rec.fecha,
+        "fechade": rec.fechade,
+        "fechahasta": rec.fechahasta,
+        "cantidad": rec.cantidad,
+        "descripcion": rec.descripcion,
         "repetir": rec.repetir,
         "usuarioid": rec.usuarioid.toString(),
         "recolectorid": rec.recolectorid.toString(),
@@ -125,13 +130,24 @@ class FuturosRecolec {
       for (var item in jsonData) {
         int recoleccionid = int.parse(item["recoleccion_id"]);
         String direccion = item["direccion"];
-        String fecha = item["fecha"];
+        String fechade = item["fechade"];
+        String fechahasta = item["fechahasta"];
+        String cantidad = item["cantidad"];
+        String descripcion = item["descripcion"];
         String repetir = item["repetir"];
         int usuarioid = int.parse(item["usuario_id"]);
         int recolectorid = int.parse(item["recolector_id"]);
 
         Recolecciones recol = Recolecciones(
-            recoleccionid, direccion, fecha, repetir, usuarioid, recolectorid);
+            recoleccionid,
+            direccion,
+            fechade,
+            fechahasta,
+            cantidad,
+            descripcion,
+            repetir,
+            usuarioid,
+            recolectorid);
         print(jsonData);
         listRecol.add(recol);
       }

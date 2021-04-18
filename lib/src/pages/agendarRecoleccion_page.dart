@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:residuos/main.dart';
+import 'package:residuos/src/models/DateVar.dart';
+import 'package:residuos/src/models/futurosUsuarios.dart';
+import 'package:residuos/src/models/recolecciones.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
+import 'package:residuos/src/models/usuarios.dart';
+// import 'package:residuos/main.dart';
 
 // import 'package:login/home_page.dart';
-String grupo = "tiempo";
+String grupo = "ninguno";
 
 class AgendarRecoleccionPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -14,27 +19,20 @@ class AgendarRecoleccionPage extends StatefulWidget {
 
 class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
   TextEditingController txtControlerDireccion = new TextEditingController();
-  String msjError = "";
-  String msjFecha = "Seleccionar fecha";
-  @override
-  void initState() {
-    super.initState();
-  }
+  TextEditingController txtControlerCantidad = new TextEditingController();
+  TextEditingController txtControlerDescripcion = new TextEditingController();
 
+  String msjError = "";
+  String msjFechade = "Seleccionar fecha";
+  String msjFechahasta = "Seleccionar fecha de";
+  DateVar datede = new DateVar.vacio();
+  DateVar datehasta = new DateVar.vacio();
+  bool isbtnHastaEnabled = false;
   @override
   Widget build(BuildContext context) {
     final direccion = TextFormField(
-      // keyboardType: TextInputType.,
-      autofocus: false,
       maxLines: 3,
       controller: txtControlerDireccion,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Por favor, ingresa tu contraseña de usuario';
-        } else {
-          return null;
-        }
-      },
       decoration: InputDecoration(
         hintText: 'Nombre Usuario',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -42,7 +40,26 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       ),
     );
 
-    final fecha = OutlinedButton(
+    final cantidad = TextFormField(
+      controller: txtControlerCantidad,
+      decoration: InputDecoration(
+        hintText: 'Cantidad aproximada de residuos',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ),
+    );
+
+    final descripcion = TextFormField(
+      maxLines: 3,
+      controller: txtControlerDescripcion,
+      decoration: InputDecoration(
+        hintText: 'Descripcion (opcional)',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ),
+    );
+
+    final fechade = OutlinedButton(
         onPressed: () {
           DatePicker.showDateTimePicker(context,
               showTitleActions: true,
@@ -58,15 +75,18 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             String dfecha = 'change $date in time zone ' +
                 date.timeZoneOffset.inHours.toString();
             print(dfecha);
+            isbtnHastaEnabled = false;
+            msjFechahasta = "Seleccionar fecha de";
           }, onConfirm: (date) {
+            isbtnHastaEnabled = true;
+            msjFechahasta = "Seleccionar fecha";
+
+            msjFechade =
+                ('${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}');
+            print(msjFechade);
+            datede = DateVar(
+                date.year, date.month, date.day, date.hour, date.minute);
             setState(() {});
-            int anio = date.year;
-            int mes = date.month;
-            int dia = date.day;
-            int hora = date.hour;
-            int minutos = date.minute;
-            msjFecha = ('$anio-$mes-$dia $hora:$minutos');
-            print(msjFecha);
           }, currentTime: DateTime.now(), locale: LocaleType.es);
         },
         style: OutlinedButton.styleFrom(
@@ -76,7 +96,52 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
           side: BorderSide(color: Colors.grey),
         ),
         child: Text(
-          msjFecha,
+          msjFechade,
+          style: TextStyle(color: Colors.grey, fontSize: 14),
+        ));
+
+    final fechahasta = OutlinedButton(
+        onPressed: isbtnHastaEnabled
+            ? () {
+                print(
+                    'Tiempo limite = ${datede.anio}-${datede.mes}-${datede.dia} ${datede.hora}:${datede.minuto}');
+                DatePicker.showDateTimePicker(context,
+                    minTime: DateTime(datede.anio, datede.mes, datede.dia,
+                        datede.hora, datede.minuto),
+                    maxTime:
+                        DateTime(datede.anio, datede.mes, datede.dia, 23, 59),
+                    showTitleActions: true,
+                    theme: DatePickerTheme(
+                        headerColor: Colors.green,
+                        // backgroundColor: Colors.black,
+                        itemStyle: TextStyle(
+                            color: Colors.black,
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                        doneStyle:
+                            TextStyle(color: Colors.white, fontSize: 16)),
+                    onChanged: (date) {
+                  String dfecha = 'change $date in time zone ' +
+                      date.timeZoneOffset.inHours.toString();
+                  print(dfecha);
+                }, onConfirm: (date) {
+                  setState(() {});
+                  msjFechahasta =
+                      ('${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}');
+                  print(msjFechahasta);
+                  datehasta = DateVar(
+                      date.year, date.month, date.day, date.hour, date.minute);
+                }, locale: LocaleType.es);
+              }
+            : () {},
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
+          side: BorderSide(color: Colors.grey),
+        ),
+        child: Text(
+          msjFechahasta,
           style: TextStyle(color: Colors.grey, fontSize: 14),
         ));
 
@@ -89,12 +154,45 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(24))),
         ),
-        onPressed: () {
-          bool camposVacios = !(_validarTextField(txtControlerDireccion.text));
+        onPressed: () async {
+          bool camposVacios = !(_validarTextField(txtControlerDireccion.text) &&
+              _validarTextField(txtControlerCantidad.text) &&
+              msjFechade != "Seleccionar fecha" &&
+              msjFechahasta != "Seleccionar fecha de" &&
+              grupo != "ninguno");
+
           if (camposVacios) {
             msjError = "Por favor llene todos los campos";
           } else {
-            msjError = "Validacion pendiente";
+            Usuario usr = Usuario.fromJson(
+                await SharedPreferencesClass.getPreferenceJsonOf("usuario"));
+
+            print("el usruid en agendarReclocionpage es " +
+                usr.usuarioId.toString());
+            String fechaderectxt =
+                '${datede.anio}-${datede.mes}-${datede.dia} ${datede.hora}:${datede.minuto}:00';
+            String fechahastarectxt =
+                '${datehasta.anio}-${datehasta.mes}-${datehasta.dia} ${datehasta.hora}:${datehasta.minuto}:00';
+            Recolecciones rec = Recolecciones(
+                0,
+                txtControlerDireccion.text,
+                fechaderectxt,
+                fechahastarectxt,
+                txtControlerCantidad.text,
+                txtControlerDescripcion.text,
+                grupo,
+                usr.usuarioId,
+                1);
+            print("Momento antes de futuro recolecion");
+            var httpResponse = await FuturosRecolec.createRecol(rec);
+            print("httpResponse.statusCode  = ${httpResponse.statusCode}");
+            if (httpResponse.statusCode == 200) {
+              print("Recoleccion agendada correctamente");
+              Navigator.pop(context);
+            } else {
+              print("Error estatus no 200");
+              msjError = "Error";
+            }
           }
           setState(() {});
           // Navigator.pop(context);
@@ -142,16 +240,27 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             SizedBox(height: 10.0),
             direccion,
             SizedBox(height: 8.0),
-            label("Fecha"),
+            label("Fecha de"),
             SizedBox(height: 10.0),
-            fecha,
+            fechade,
+            SizedBox(height: 10.0),
+            label("Fecha hasta"),
+            SizedBox(height: 10.0),
+            fechahasta,
+            SizedBox(height: 8.0),
+            label("Cantidad aproximada"),
+            SizedBox(height: 10.0),
+            cantidad,
+            SizedBox(height: 10.0),
+            label("Descripcion"),
+            SizedBox(height: 10.0),
+            descripcion,
             SizedBox(height: 10.0),
             _radio("unaVez", "Unica vez"),
             _radio("diario", "Recolectar diariamente"),
             _radio("semanal", "Recolectar semanalmente"),
             _radio("mensual", "Recolectar Mensualmente"),
             labelMensajeError,
-            SizedBox(height: 0.0),
             agendarButton,
           ],
         ),

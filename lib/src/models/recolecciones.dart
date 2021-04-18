@@ -1,16 +1,22 @@
 class Recolecciones {
   int recoleccionid;
   String direccion;
-  String fecha;
+  String fechade;
+  String fechahasta;
+  String cantidad;
+  String descripcion;
   String repetir;
   int usuarioid;
   int recolectorid;
 
-  Recolecciones(
-      recoleccionid, direccion, fecha, repetir, usuarioid, recolectorid) {
+  Recolecciones(recoleccionid, direccion, fechade, fechahasta, cantidad,
+      descripcion, repetir, usuarioid, recolectorid) {
     this.recoleccionid = recoleccionid;
     this.direccion = direccion;
-    this.fecha = fecha;
+    this.fechade = fechade;
+    this.fechahasta = fechahasta;
+    this.cantidad = cantidad;
+    this.descripcion = descripcion;
     this.repetir = repetir;
     this.usuarioid = usuarioid;
     this.recolectorid = recolectorid;
@@ -18,7 +24,10 @@ class Recolecciones {
   Recolecciones.fromJson(Map<String, dynamic> json)
       : recoleccionid = json['recoleccionid'],
         direccion = json['direccion'],
-        fecha = json['fecha'],
+        fechade = json['fecha'],
+        fechahasta = json['fechahasta'],
+        cantidad = json['cantidad'],
+        descripcion = json['descripcion'],
         repetir = json['repetir'],
         usuarioid = json['usuarioid'],
         recolectorid = json['recolectorid'];
@@ -26,7 +35,10 @@ class Recolecciones {
   Map<String, dynamic> toJson() => {
         "recoleccionid": recoleccionid,
         "direccion": direccion,
-        "fecha": fecha,
+        "fechade": fechade,
+        "fechahasta": fechahasta,
+        "cantidad": cantidad,
+        "descripcion": descripcion,
         "repetir": repetir,
         "usuarioid": usuarioid,
         "recolectorid": recolectorid,

@@ -67,7 +67,7 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
                     Usuario usr = Usuario.fromJson(
                         await SharedPreferencesClass.getPreferenceJsonOf(
                             "usuario"));
-                    print(usr.usrName);
+                    print("el usrname en selecintipo es " + usr.usrName);
                     usr.rol = 2;
                     var httpResponse = await FuturosUsr.updateUser(usr);
                     if (httpResponse.statusCode == 200) {

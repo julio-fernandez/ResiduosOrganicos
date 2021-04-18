@@ -31,7 +31,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                     snapshot.connectionState == ConnectionState.done) {
                   List<_Row> rows = [];
                   for (var item in snapshot.data) {
-                    rows.add(_Row(item.direccion, item.fecha, item.fecha,
+                    rows.add(_Row(item.direccion, item.fechade, item.fechahasta,
                         item.repetir, 'btn mod', 'btn eliminar'));
                   }
                   return PaginatedDataTable(
@@ -40,8 +40,8 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                     columnSpacing: 40,
                     columns: [
                       DataColumn(label: Text('Dirección')),
-                      DataColumn(label: Text('Fecha')),
-                      DataColumn(label: Text('Hora')),
+                      DataColumn(label: Text('FechaDe')),
+                      DataColumn(label: Text('FechaHasta')),
                       DataColumn(label: Text('Repetición')),
                       DataColumn(label: Text('Modificar')),
                       DataColumn(label: Text('Eliminar')),
