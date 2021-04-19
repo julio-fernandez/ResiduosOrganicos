@@ -8,6 +8,9 @@ class PresentacionPage extends StatefulWidget {
   static const kIcons = <Widget>[
     CardInicio(),
     CardGuiaUno(),
+    CardGuiaUno(),
+    CardGuiaUno(),
+    CardGuiaUno(),
     Center(
         child: Text(
       "Continuar",

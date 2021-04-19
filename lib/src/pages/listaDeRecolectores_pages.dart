@@ -20,6 +20,13 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Desechos organicos'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "login");
+              })
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

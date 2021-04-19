@@ -90,13 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                   "usuario", usuario.toJson());
               if (usuario.rol == 1) {
                 print("se ha logeado  como usuario generador de residuos");
-                Navigator.pushNamed(context, "listaRecoleciones");
+                Navigator.pushReplacementNamed(context, "listaRecoleciones");
               } else if (usuario.rol == 2) {
                 print("se ha logeado  como Recolector de residuos");
-                Navigator.pushNamed(context, "listaRecolectores");
+                Navigator.pushReplacementNamed(context, "listaRecolectores");
               } else if (usuario.rol == 0) {
                 print("se ha logeado  como sin rol");
-                Navigator.pushNamed(context, "selectorTipo");
+                Navigator.pushReplacementNamed(context, "selectorTipo");
               }
             } else {
               msjError = ("Usuario y/o contraseña incorrectos");
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(color: Colors.black54),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, "registro");
+        Navigator.pushReplacementNamed(context, "registro");
       },
     );
 

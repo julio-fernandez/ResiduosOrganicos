@@ -188,7 +188,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             print("httpResponse.statusCode  = ${httpResponse.statusCode}");
             if (httpResponse.statusCode == 200) {
               print("Recoleccion agendada correctamente");
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, "listaRecoleciones");
             } else {
               print("Error estatus no 200");
               msjError = "Error";
@@ -227,6 +227,13 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Desechos organicos'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "listaRecoleciones");
+              })
+        ],
       ),
       body: Center(
         child: ListView(

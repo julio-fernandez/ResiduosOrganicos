@@ -132,7 +132,7 @@ class _RegistroPageState extends State<RegistroPage> {
                   "usuario", usr.toJson());
               print("Usuario creado :)");
               print(usr);
-              Navigator.of(context).pushNamed("selectorTipo");
+              Navigator.of(context).pushReplacementNamed("selectorTipo");
             } else if (httpResponse.statusCode == 466) {
               msjError = "El usuario ya existe";
             } else {
@@ -172,6 +172,11 @@ class _RegistroPageState extends State<RegistroPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "login");
+            }),
         title: Text('Registro'),
       ),
       body: Center(

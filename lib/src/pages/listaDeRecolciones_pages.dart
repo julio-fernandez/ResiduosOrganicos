@@ -20,6 +20,13 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Desechos organicos'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "login");
+              })
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -84,11 +91,11 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                 }
               }),
           ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "agendarRecoleccionPage")
-                    .then((value) => setState(() {}));
-              },
-              child: Text("Agendar Recolección")),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "agendarRecoleccionPage");
+            },
+            child: Text("Agendar Recolección"),
+          ),
         ],
       ),
     );
