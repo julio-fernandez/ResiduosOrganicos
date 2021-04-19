@@ -8,12 +8,12 @@ class RecolectoresLista extends StatefulWidget {
 }
 
 class _RecolectoresListaState extends State<RecolectoresLista> {
-  Future<List<Recolecciones>> _listaRecol;
+  Future<List<Recolecciones>> _futuroListaRecol;
 
   @override
   void initState() {
     super.initState();
-    _listaRecol = FuturosRecolec.getRecolecciones();
+    _futuroListaRecol = FuturosRecolec.getRecoleccionesByrecolector();
   }
 
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
         padding: const EdgeInsets.all(16),
         children: [
           FutureBuilder(
-              future: _listaRecol,
+              future: _futuroListaRecol,
               builder: (context, snapshot) {
                 print("Valor del future builder");
                 print(snapshot.data);
@@ -58,7 +58,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                     }
 
                     return PaginatedDataTable(
-                      header: Text('Lista de usuarios que se recolectaran'),
+                      header: Text('Lista de usuarios que se recolectaran '),
                       rowsPerPage: 7,
                       columnSpacing: 40,
                       columns: [
@@ -92,7 +92,8 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
               }),
           ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "agendarRecoleccionPage")
+                Navigator.pushReplacementNamed(
+                        context, "agendarRecolectoresPage")
                     .then((value) => setState(() {}));
               },
               child: Text("Agendar Recolección")),

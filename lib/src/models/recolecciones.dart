@@ -43,4 +43,8 @@ class Recolecciones {
         "usuarioid": usuarioid,
         "recolectorid": recolectorid,
       };
+  static String fechaFormatoCorrector(String fecha) {
+    String aux = fecha.replaceAll("T", " ");
+    return aux.replaceAll(".000Z", "");
+  }
 }

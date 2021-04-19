@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:residuos/src/models/futurosUsuarios.dart';
+import 'package:residuos/src/models/recolecciones.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
+import 'package:residuos/src/models/usuarios.dart';
 
 // import 'package:login/home_page.dart';
 String grupo = "tiempo";
+_DataSource dataSource;
 
 class AgendarRecolectoresPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -11,117 +16,213 @@ class AgendarRecolectoresPage extends StatefulWidget {
 }
 
 class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
+  Future<List<Recolecciones>> _futuroListaRecol;
+  List<Recolecciones> _listaRecol = [];
+  @override
+  void initState() {
+    super.initState();
+    _futuroListaRecol = FuturosRecolec.getRecoleccionesByrecolectornulo();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final direccion = TextFormField(
-      // keyboardType: TextInputType.,
-      autofocus: false,
-      initialValue: 'Nombre',
-      maxLines: 3,
-      decoration: InputDecoration(
-        hintText: 'Nombre Usuario',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-
-    final password = TextFormField(
-      autofocus: false,
-      initialValue: 'contraseña',
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Password',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-
-    final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.lightBlueAccent,
-          onPrimary: Colors.lightBlueAccent[700],
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(24))),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Text('Agendar', style: TextStyle(color: Colors.white)),
-        ),
-      ),
-    );
-
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Desechos organicos'),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "listaRecolectores");
+            }),
       ),
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            SizedBox(height: 20.0),
-            labelTitulo("Agendar recolectores de desechos organicos"),
-            SizedBox(height: 20.0),
-            label("Direccion"),
-            SizedBox(height: 10.0),
-            direccion,
-            SizedBox(height: 8.0),
-            label("Fecha"),
-            SizedBox(height: 10.0),
-            password,
-            SizedBox(height: 10.0),
-            _radio("unaVez", "Unica vez"),
-            _radio("diario", "Recolectar diariamente"),
-            _radio("semanal", "Recolectar semanalmente"),
-            _radio("mensual", "Recolectar Mensualmente"),
-            SizedBox(height: 24.0),
-            loginButton,
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          FutureBuilder(
+              future: _futuroListaRecol,
+              builder: (context, snapshot) {
+                print("Valor del future builder");
+                print(snapshot.data);
+                List<Recolecciones> reco = (snapshot.data);
+                print("¿Es nulo?");
+                bool isnullRec = reco == null ? true : false;
+                print(isnullRec);
+                if (!isnullRec) {
+                  if (snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    List<_Row> rows = [];
+
+                    for (var item in snapshot.data) {
+                      _listaRecol.add(item);
+                      rows.add(_Row(
+                        item.direccion,
+                        Recolecciones.fechaFormatoCorrector(item.fechade),
+                        Recolecciones.fechaFormatoCorrector(item.fechahasta),
+                        item.cantidad,
+                        item.descripcion,
+                        item.repetir,
+                        'btn mod',
+                        'btn eliminar',
+                        item.recoleccionid,
+                        item.usuarioid,
+                        item.recolectorid,
+                      ));
+                    }
+
+                    return PaginatedDataTable(
+                      header:
+                          Text('Seleccione los recolecciones para recolectar'),
+                      rowsPerPage: 7,
+                      columnSpacing: 40,
+                      columns: [
+                        DataColumn(label: Text('Dirección')),
+                        DataColumn(label: Text('Fecha de')),
+                        DataColumn(label: Text('limite')),
+                        DataColumn(label: Text('cantidad')),
+                        DataColumn(label: Text('descripción')),
+                        DataColumn(label: Text('Repetición')),
+                        DataColumn(label: Text('Modificar')),
+                        DataColumn(label: Text('Eliminar')),
+                      ],
+                      source: dataSource = _DataSource(context, rows),
+                    );
+                  } else {
+                    return Center(
+                        child: Container(
+                            margin: EdgeInsets.only(top: 100, bottom: 200),
+                            height: 200.0,
+                            width: 200.0,
+                            child: CircularProgressIndicator()));
+                  }
+                } else {
+                  return Center(
+                      child: Container(
+                          margin: EdgeInsets.only(top: 100),
+                          height: 200.0,
+                          width: 200.0,
+                          child: CircularProgressIndicator()));
+                }
+              }),
+          ElevatedButton(
+              onPressed: () async {
+                Usuario usr = Usuario.fromJson(
+                    await SharedPreferencesClass.getPreferenceJsonOf(
+                        "usuario"));
+                List<int> recid = [];
+                print("Id de rows guardados");
+                for (_Row item in dataSource._rows) {
+                  if (item.selected) {
+                    recid.add(item.recoleccionid);
+                    print(item.recoleccionid);
+                  }
+                }
+                print("ids de elementos a actualizar");
+
+                for (Recolecciones item in _listaRecol) {
+                  if (recid.contains((item.recoleccionid))) {
+                    item.recolectorid = usr.usuarioId;
+                    print("recoleccionid a actualizar=");
+                    print(item.recoleccionid);
+                    item.fechade =
+                        Recolecciones.fechaFormatoCorrector(item.fechade);
+                    item.fechahasta =
+                        Recolecciones.fechaFormatoCorrector(item.fechahasta);
+                    var httpResponse = await FuturosRecolec.updateRecol(item);
+                    if (httpResponse.statusCode == 200) {
+                      print("Recolecion ${item.recoleccionid} actualizada");
+                      Navigator.pushReplacementNamed(
+                          context, "listaRecolectores");
+                    } else {
+                      print(
+                          "Recolecion ${item.recoleccionid} fallida actualizacion");
+                    }
+                  }
+                }
+                print("Usr name=${usr.usrName}");
+                setState(() {});
+              },
+              child: Text("Agendar Recolección")),
+        ],
       ),
     );
   }
+}
 
-  label(String textoLb) {
-    return Padding(
-        padding: EdgeInsets.only(left: 20.0),
-        child: Text(
-          textoLb,
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ));
+class _Row {
+  _Row(
+    this.valueA,
+    this.valueB,
+    this.valueC,
+    this.valueD,
+    this.valueE,
+    this.valueF,
+    this.valueG,
+    this.valueH,
+    this.recoleccionid,
+    this.usuarioid,
+    this.recolectorid,
+  );
+
+  final String valueA;
+  final String valueB;
+  final String valueC;
+  final String valueD;
+  final String valueE;
+  final String valueF;
+  final String valueG;
+  final String valueH;
+  final int recoleccionid;
+  final int usuarioid;
+  final int recolectorid;
+
+  bool selected = false;
+}
+
+class _DataSource extends DataTableSource {
+  _DataSource(this.context, List<_Row> datos) {
+    _rows = datos;
   }
 
-  labelTitulo(String textoLb) {
-    return Padding(
-        padding: EdgeInsets.only(left: 15.0),
-        child: Text(
-          textoLb,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, height: 1.4),
-        ));
-  }
+  final BuildContext context;
+  List<_Row> _rows;
 
-  Widget _radio(String valor, String texto) {
-    return RadioListTile(
-      title: Text(
-        texto,
-      ),
-      value: valor,
-      groupValue: grupo,
-      onChanged: (value) {
-        setState(() {
-          grupo = value;
-          // mensaje = "La carrera seleccionada es: ";
-        });
+  int _selectedCount = 0;
+
+  @override
+  DataRow getRow(int index) {
+    assert(index >= 0);
+    if (index >= _rows.length) return null;
+    final row = _rows[index];
+    return DataRow.byIndex(
+      index: index,
+      selected: row.selected,
+      onSelectChanged: (value) {
+        if (row.selected != value) {
+          _selectedCount += value ? 1 : -1;
+          assert(_selectedCount >= 0);
+          row.selected = value;
+          notifyListeners();
+        }
       },
+      cells: [
+        DataCell(Text(row.valueA)),
+        DataCell(Text(row.valueB)),
+        DataCell(Text(row.valueC)),
+        DataCell(Text(row.valueD)),
+        DataCell(Text(row.valueE)),
+        DataCell(Text(row.valueF)),
+        DataCell(Text(row.valueG)),
+        DataCell(Text(row.valueH)),
+      ],
     );
   }
+
+  @override
+  int get rowCount => _rows.length;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => _selectedCount;
 }

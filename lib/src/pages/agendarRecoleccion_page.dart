@@ -63,6 +63,12 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
         onPressed: () {
           DatePicker.showDateTimePicker(context,
               showTitleActions: true,
+              minTime: DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                  DateTime.now().hour,
+                  DateTime.now().minute),
               theme: DatePickerTheme(
                   headerColor: Colors.green,
                   // backgroundColor: Colors.black,

@@ -94,6 +94,7 @@ class FuturosRecolec {
   static Future<http.Response> updateRecol(Recolecciones rec) {
     return http.put(
       // '${ApiEndPointData.usuarios}/${rec.usuarioId}'
+      //
       Uri.http(
           ApiEndPointData.endPoint, '/api/recolecciones/${rec.recoleccionid}'),
       headers: <String, String>{
@@ -173,6 +174,112 @@ class FuturosRecolec {
       String body = utf8.decode(response.bodyBytes);
       if (body == "" || body.isEmpty) {
         print("No existen recoleciones by usuario-getRecoleccionesByusuario");
+        return null;
+      }
+      print("Valor del body ---------");
+      print(body);
+      //return null;
+      final jsonData = jsonDecode(body);
+      print("Valor usuario en data del Future");
+      print(jsonData);
+      List<Recolecciones> listRec = [];
+
+      for (var item in jsonData) {
+        int recoleccionid = int.parse(item["recoleccion_id"]);
+        String direccion = item["direccion"];
+        String fechade = item["fechade"];
+        String fechahasta = item["fechahasta"];
+        String cantidad = item["cantidad"];
+        String descripcion = item["descripcion"];
+        String repetir = item["repetir"];
+        int usuarioid = int.parse(item["usuario_id"]);
+        int recolectorid = int.parse(item["recolector_id"]);
+        Recolecciones recol = Recolecciones(
+            recoleccionid,
+            direccion,
+            fechade,
+            fechahasta,
+            cantidad,
+            descripcion,
+            repetir,
+            usuarioid,
+            recolectorid);
+        print(item);
+        listRec.add(recol);
+      }
+      return listRec;
+    } else {
+      print("Error de conexion");
+      throw Exception("Fallo la conexion");
+    }
+  }
+
+  static Future<List<Recolecciones>> getRecoleccionesByrecolector() async {
+    print("Inicio futuro");
+    Usuario usr = Usuario.fromJson(
+        await SharedPreferencesClass.getPreferenceJsonOf("usuario"));
+    print("El nombre del usuario en el Future getRecoleccionesByrecolector es");
+    print(usr.usrName);
+
+    var url = Uri.http(ApiEndPointData.endPoint,
+        '/api/recoleccionesporrecolector/${usr.usuarioId}');
+    print(url.path);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print("Estado 200-getRecoleccionesByusuario");
+      String body = utf8.decode(response.bodyBytes);
+      if (body == "" || body.isEmpty) {
+        print(
+            "No existen recoleciones by usuario-getRecoleccionesByrecolector");
+        return null;
+      }
+      print("Valor del body ---------");
+      print(body);
+      //return null;
+      final jsonData = jsonDecode(body);
+      print("Valor usuario en data del Future");
+      print(jsonData);
+      List<Recolecciones> listRec = [];
+
+      for (var item in jsonData) {
+        int recoleccionid = int.parse(item["recoleccion_id"]);
+        String direccion = item["direccion"];
+        String fechade = item["fechade"];
+        String fechahasta = item["fechahasta"];
+        String cantidad = item["cantidad"];
+        String descripcion = item["descripcion"];
+        String repetir = item["repetir"];
+        int usuarioid = int.parse(item["usuario_id"]);
+        int recolectorid = int.parse(item["recolector_id"]);
+        Recolecciones recol = Recolecciones(
+            recoleccionid,
+            direccion,
+            fechade,
+            fechahasta,
+            cantidad,
+            descripcion,
+            repetir,
+            usuarioid,
+            recolectorid);
+        print(item);
+        listRec.add(recol);
+      }
+      return listRec;
+    } else {
+      print("Error de conexion");
+      throw Exception("Fallo la conexion");
+    }
+  }
+
+  static Future<List<Recolecciones>> getRecoleccionesByrecolectornulo() async {
+    print("Inicio futuro");
+    var url = Uri.http(ApiEndPointData.endPoint, '/api/recolectornulo');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print("Estado 200-getRecoleccionesByrecolectores nulo");
+      String body = utf8.decode(response.bodyBytes);
+      if (body == "" || body.isEmpty) {
+        print("No existen recoleciones getRecoleccionesByrecolectornulo");
         return null;
       }
       print("Valor del body ---------");
