@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/recolecciones.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
 
 class RecolecionesLista extends StatefulWidget {
   @override
@@ -44,7 +45,8 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
-              onPressed: () {
+              onPressed: () async {
+                await SharedPreferencesClass.setPreference("initScreen", 2);
                 Navigator.pushReplacementNamed(context, "login");
               })
         ],

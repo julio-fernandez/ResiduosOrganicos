@@ -90,9 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                   "usuario", usuario.toJson());
               if (usuario.rol == 1) {
                 print("se ha logeado  como usuario generador de residuos");
+                await SharedPreferencesClass.setPreference("initScreen", 3);
                 Navigator.pushReplacementNamed(context, "listaRecoleciones");
               } else if (usuario.rol == 2) {
                 print("se ha logeado  como Recolector de residuos");
+                await SharedPreferencesClass.setPreference("initScreen", 4);
                 Navigator.pushReplacementNamed(context, "listaRecolectores");
               } else if (usuario.rol == 0) {
                 print("se ha logeado  como sin rol");

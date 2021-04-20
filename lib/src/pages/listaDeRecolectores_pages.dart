@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/recolecciones.dart';
+import 'package:residuos/src/models/shared_preferences.dart';
 
 class RecolectoresLista extends StatefulWidget {
   @override
@@ -9,11 +10,40 @@ class RecolectoresLista extends StatefulWidget {
 
 class _RecolectoresListaState extends State<RecolectoresLista> {
   Future<List<Recolecciones>> _futuroListaRecol;
+  List<Recolecciones> _listaRecol = [];
 
   @override
   void initState() {
     super.initState();
     _futuroListaRecol = FuturosRecolec.getRecoleccionesByrecolector();
+  }
+
+  Widget btnEliminar(int idRecoleccion) {
+    return ElevatedButton(
+      onPressed: () async {
+        print("Boton eliminado con id=$idRecoleccion");
+        for (Recolecciones item in _listaRecol) {
+          if (item.recoleccionid == idRecoleccion) {
+            item.fechade = Recolecciones.fechaFormatoCorrector(item.fechade);
+            item.fechahasta =
+                Recolecciones.fechaFormatoCorrector(item.fechahasta);
+            item.recolectorid = 1;
+            var httpResponse = await FuturosRecolec.updateRecol(item);
+            if (httpResponse.statusCode == 200) {
+              Navigator.pushReplacementNamed(context, "listaRecolectores");
+            } else {
+              print("Error eliminando(actualizando) usuario o recolectar");
+            }
+            break;
+          }
+        }
+      },
+      child: Text("Eliminar"),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.red, // background
+        onPrimary: Colors.white, // foreground
+      ),
+    );
   }
 
   Widget build(BuildContext context) {
@@ -23,7 +53,8 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
-              onPressed: () {
+              onPressed: () async {
+                await SharedPreferencesClass.setPreference("initScreen", 2);
                 Navigator.pushReplacementNamed(context, "login");
               })
         ],
@@ -46,6 +77,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                     List<_Row> rows = [];
 
                     for (var item in snapshot.data) {
+                      _listaRecol.add(item);
                       rows.add(_Row(
                           item.direccion,
                           item.fechade,
@@ -53,8 +85,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                           item.cantidad,
                           item.descripcion,
                           item.repetir,
-                          'btn mod',
-                          'btn eliminar'));
+                          btnEliminar(item.recoleccionid)));
                     }
 
                     return PaginatedDataTable(
@@ -68,8 +99,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                         DataColumn(label: Text('cantidad')),
                         DataColumn(label: Text('descripción')),
                         DataColumn(label: Text('Repetición')),
-                        DataColumn(label: Text('Modificar')),
-                        DataColumn(label: Text('Eliminar')),
+                        DataColumn(label: Text('')),
                       ],
                       source: _DataSource(context, rows),
                     );
@@ -112,7 +142,6 @@ class _Row {
     this.valueE,
     this.valueF,
     this.valueG,
-    this.valueH,
   );
 
   final String valueA;
@@ -121,8 +150,7 @@ class _Row {
   final String valueD;
   final String valueE;
   final String valueF;
-  final String valueG;
-  final String valueH;
+  final Widget valueG;
 
   bool selected = false;
 }
@@ -160,8 +188,7 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueD)),
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
-        DataCell(Text(row.valueG)),
-        DataCell(Text(row.valueH)),
+        DataCell(row.valueG),
       ],
     );
   }

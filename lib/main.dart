@@ -10,17 +10,13 @@ import 'package:residuos/src/pages/listaDeRecolciones_pages.dart';
 import 'package:residuos/src/pages/listaDeRecolectores_pages.dart';
 import 'package:residuos/src/pages/agendarRecoleccion_page.dart';
 import 'package:residuos/src/pages/agendarRecolectores_page.dart';
-
 import 'package:residuos/src/pages/pruebas/tableExample_pages.dart';
-// import 'package:residuos/src/pages/pruebas/pruebaApi_pages.dart';
 
-// import 'package:residuos/src/pages/pruebas/sh_preferencies_pages.dart';
 int initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // await prefs.setInt("initScreen", 2);
-  await prefs.setInt("initScreen", 2);
   // ignore: await_only_futures
   initScreen = await prefs.getInt("initScreen");
   print('initScreen $initScreen');
@@ -32,9 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Desechos organicos',
-      theme:
-          //  _buildShrineTheme(),
-          ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.green,
         fontFamily: 'Nunito',
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -50,7 +44,6 @@ class MyApp extends StatelessWidget {
       }()),
       routes: {
         '/': (BuildContext context) => PresentacionPage(),
-        // '/': (BuildContext context) => RecolecionesLista(),
         'presentacion': (BuildContext context) => PresentacionPage(),
         'login': (BuildContext context) => LoginPage(),
         'registro': (BuildContext context) => RegistroPage(),

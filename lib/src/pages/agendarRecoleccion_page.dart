@@ -233,13 +233,11 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Desechos organicos'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, "listaRecoleciones");
-              })
-        ],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "listaRecoleciones");
+            }),
       ),
       body: Center(
         child: ListView(
