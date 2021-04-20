@@ -16,6 +16,27 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
     _listaRecol = FuturosRecolec.getRecoleccionesByusuario();
   }
 
+  Widget btnEliminar(int idRecoleccion) {
+    return ElevatedButton(
+      onPressed: () async {
+        print("Boton eliminado con id=$idRecoleccion");
+        var httpResponse =
+            await FuturosRecolec.deleteRecolecionById(idRecoleccion);
+        if (httpResponse.statusCode == 200) {
+          print("Eliminado correctamente en lista de recoleciones");
+          Navigator.pushReplacementNamed(context, "listaRecoleciones");
+        } else {
+          print("Error eliminar recolecion en lista");
+        }
+      },
+      child: Text("Eliminar"),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.red, // background
+        onPrimary: Colors.white, // foreground
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -48,13 +69,12 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                     for (var item in snapshot.data) {
                       rows.add(_Row(
                           item.direccion,
-                          item.fechade,
-                          item.fechahasta,
+                          Recolecciones.fechaFormatoCorrector(item.fechade),
+                          Recolecciones.fechaFormatoCorrector(item.fechahasta),
                           item.cantidad,
                           item.descripcion,
                           item.repetir,
-                          'btn mod',
-                          'btn eliminar'));
+                          btnEliminar(item.recoleccionid)));
                     }
 
                     return PaginatedDataTable(
@@ -68,8 +88,7 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                         DataColumn(label: Text('cantidad')),
                         DataColumn(label: Text('descripción')),
                         DataColumn(label: Text('Repetición')),
-                        DataColumn(label: Text('Modificar')),
-                        DataColumn(label: Text('Eliminar')),
+                        DataColumn(label: Text('')),
                       ],
                       source: _DataSource(context, rows),
                     );
@@ -111,7 +130,6 @@ class _Row {
     this.valueE,
     this.valueF,
     this.valueG,
-    this.valueH,
   );
 
   final String valueA;
@@ -120,8 +138,7 @@ class _Row {
   final String valueD;
   final String valueE;
   final String valueF;
-  final String valueG;
-  final String valueH;
+  final Widget valueG;
 
   bool selected = false;
 }
@@ -159,8 +176,7 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueD)),
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
-        DataCell(Text(row.valueG)),
-        DataCell(Text(row.valueH)),
+        DataCell(row.valueG),
       ],
     );
   }

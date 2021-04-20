@@ -114,6 +114,20 @@ class FuturosRecolec {
     );
   }
 
+  static Future<http.Response> deleteRecolecionById(int id) async {
+    var url = Uri.http(ApiEndPointData.endPoint, '/api/recolecciones/$id');
+    return await http.delete(url);
+
+    // if (response.statusCode == 200) {
+    //   String body = utf8.decode(response.bodyBytes);
+    //   print("Recoleccion eliminada $body");
+
+    //   return usr;
+    // } else {
+    //   throw Exception("Fallo la conexion");
+    // }
+  }
+
   static Future<List<Recolecciones>> getRecolecciones() async {
     print("Inicio futuro");
     var url = Uri.http(ApiEndPointData.endPoint, '/api/recolecciones');
