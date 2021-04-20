@@ -46,6 +46,33 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
     );
   }
 
+  Widget btnConfirmar(int idRecoleccion) {
+    return ElevatedButton(
+      onPressed: () async {
+        print("Boton confirmar recolectado con id=$idRecoleccion");
+        for (Recolecciones item in _listaRecol) {
+          if (item.recoleccionid == idRecoleccion) {
+            item.fechade = Recolecciones.fechaFormatoCorrector(item.fechade);
+            item.fechahasta = "2000-00-00 00:00:00";
+            item.recolectorid = 1;
+            var httpResponse = await FuturosRecolec.updateRecol(item);
+            if (httpResponse.statusCode == 200) {
+              Navigator.pushReplacementNamed(context, "listaRecolectores");
+            } else {
+              print("Error confirmar(actualizando) usuario o recolectar");
+            }
+            break;
+          }
+        }
+      },
+      child: Text("Confirmar recolecion exitosa"),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.green, // background
+        onPrimary: Colors.white, // foreground
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -80,12 +107,13 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                       _listaRecol.add(item);
                       rows.add(_Row(
                           item.direccion,
-                          item.fechade,
-                          item.fechahasta,
+                          Recolecciones.fechaFormatoCorrector(item.fechade),
+                          Recolecciones.fechaFormatoCorrector(item.fechahasta),
                           item.cantidad,
                           item.descripcion,
                           item.repetir,
-                          btnEliminar(item.recoleccionid)));
+                          btnEliminar(item.recoleccionid),
+                          btnConfirmar(item.recoleccionid)));
                     }
 
                     return PaginatedDataTable(
@@ -99,6 +127,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
                         DataColumn(label: Text('cantidad')),
                         DataColumn(label: Text('descripción')),
                         DataColumn(label: Text('Repetición')),
+                        DataColumn(label: Text('')),
                         DataColumn(label: Text('')),
                       ],
                       source: _DataSource(context, rows),
@@ -142,6 +171,7 @@ class _Row {
     this.valueE,
     this.valueF,
     this.valueG,
+    this.valueH,
   );
 
   final String valueA;
@@ -151,6 +181,7 @@ class _Row {
   final String valueE;
   final String valueF;
   final Widget valueG;
+  final Widget valueH;
 
   bool selected = false;
 }
@@ -189,6 +220,7 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
         DataCell(row.valueG),
+        DataCell(row.valueH),
       ],
     );
   }

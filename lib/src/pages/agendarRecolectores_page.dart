@@ -53,20 +53,23 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                     List<_Row> rows = [];
 
                     for (var item in snapshot.data) {
-                      _listaRecol.add(item);
-                      rows.add(_Row(
-                        item.direccion,
-                        Recolecciones.fechaFormatoCorrector(item.fechade),
-                        Recolecciones.fechaFormatoCorrector(item.fechahasta),
-                        item.cantidad,
-                        item.descripcion,
-                        item.repetir,
-                        'btn mod',
-                        'btn eliminar',
-                        item.recoleccionid,
-                        item.usuarioid,
-                        item.recolectorid,
-                      ));
+                      if (item.fechahasta != "2000-00-00 00:00:00") {
+                        _listaRecol.add(item);
+
+                        rows.add(_Row(
+                          item.direccion,
+                          Recolecciones.fechaFormatoCorrector(item.fechade),
+                          Recolecciones.fechaFormatoCorrector(item.fechahasta),
+                          item.cantidad,
+                          item.descripcion,
+                          item.repetir,
+                          'Nombre usuario',
+                          'Puntuacion usuario',
+                          item.recoleccionid,
+                          item.usuarioid,
+                          item.recolectorid,
+                        ));
+                      }
                     }
 
                     return PaginatedDataTable(
@@ -81,8 +84,8 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                         DataColumn(label: Text('cantidad')),
                         DataColumn(label: Text('descripción')),
                         DataColumn(label: Text('Repetición')),
-                        DataColumn(label: Text('Modificar')),
-                        DataColumn(label: Text('Eliminar')),
+                        DataColumn(label: Text('Nombre usuario')),
+                        DataColumn(label: Text('Puntuacion usuario')),
                       ],
                       source: dataSource = _DataSource(context, rows),
                     );

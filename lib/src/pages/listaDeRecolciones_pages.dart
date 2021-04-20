@@ -70,9 +70,18 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
 
                     for (var item in snapshot.data) {
                       rows.add(_Row(
+                          _getEstado(
+                              item.recolectorid,
+                              Recolecciones.fechaFormatoCorrector(
+                                  item.fechahasta)),
                           item.direccion,
                           Recolecciones.fechaFormatoCorrector(item.fechade),
-                          Recolecciones.fechaFormatoCorrector(item.fechahasta),
+                          Recolecciones.fechaFormatoCorrector(
+                                      item.fechahasta) ==
+                                  "2000-00-00 00:00:00"
+                              ? "Completado"
+                              : Recolecciones.fechaFormatoCorrector(
+                                  item.fechahasta),
                           item.cantidad,
                           item.descripcion,
                           item.repetir,
@@ -84,6 +93,7 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
                       rowsPerPage: 7,
                       columnSpacing: 40,
                       columns: [
+                        DataColumn(label: Text('Estado')),
                         DataColumn(label: Text('Dirección')),
                         DataColumn(label: Text('Fecha de')),
                         DataColumn(label: Text('limite')),
@@ -123,8 +133,40 @@ class _RecolecionesListaState extends State<RecolecionesLista> {
   }
 }
 
+Widget _getEstado(int recolectorid, String fecha) {
+  String estadoRec = "";
+  Color colormsj;
+  Color colortext;
+  if (recolectorid == 1) {
+    estadoRec = "En asignacion";
+    colormsj = Colors.grey;
+    colortext = Colors.white;
+  } else if (fecha == "2000-00-00 00:00:00") {
+    estadoRec = "Completa";
+    colormsj = Colors.green;
+    colortext = Colors.white;
+  } else {
+    estadoRec = "Asignado";
+    colormsj = Colors.yellow;
+    colortext = Colors.black87;
+  }
+
+  return Container(
+    decoration: BoxDecoration(
+      color: colormsj,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    padding: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 10),
+    child: Text(
+      estadoRec,
+      style: TextStyle(color: colortext),
+    ),
+  );
+}
+
 class _Row {
   _Row(
+    this.valueAA,
     this.valueA,
     this.valueB,
     this.valueC,
@@ -133,7 +175,7 @@ class _Row {
     this.valueF,
     this.valueG,
   );
-
+  final Widget valueAA;
   final String valueA;
   final String valueB;
   final String valueC;
@@ -172,6 +214,7 @@ class _DataSource extends DataTableSource {
       //   }
       // },
       cells: [
+        DataCell(row.valueAA),
         DataCell(Text(row.valueA)),
         DataCell(Text(row.valueB)),
         DataCell(Text(row.valueC)),

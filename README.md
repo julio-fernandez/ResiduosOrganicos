@@ -38,7 +38,7 @@ flutter pub pub add flutter_datetime_picker
 
 ###Instalar encriptador contraseñas ----no usado---
 ~~~
-flutter pub pub add flutter_string_encryption
+nop nop nop nop flutter pub pub add flutter_string_encryption 
 ~~~
 <hr>
 
