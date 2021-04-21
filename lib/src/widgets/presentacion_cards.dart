@@ -12,7 +12,7 @@ class CardInicio extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(top: 25, bottom: 50),
               child: Text(
-                "Desechos Organicos",
+                "Residuos Orgánicos",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 50),
               ),
@@ -50,7 +50,7 @@ class CardGuiaUno extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(top: 40, bottom: 25),
               child: Text(
-                "!Como ayudar a tu ciudad a ser un lugar mejor¡",
+                "¿ Como ayudar a tu ciudad a ser un lugar mejor ?",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
@@ -60,7 +60,7 @@ class CardGuiaUno extends StatelessWidget {
             child: Row(
               children: [
                 Image.asset(
-                  "assets/img/planet-earth-green.png",
+                  "assets/img/botedeResiduos.png",
                   width: 100,
                 ),
                 Row(
@@ -90,7 +90,7 @@ class CardGuiaUno extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 40),
                   child: Image.asset(
-                    "assets/img/planet-earth-green.png",
+                    "assets/img/recolecion-camion.png",
                     width: 100,
                   ),
                 ),
@@ -99,8 +99,8 @@ class CardGuiaUno extends StatelessWidget {
           ),
           Flexible(
             child: Container(
-              padding: EdgeInsets.only(right: 15, left: 15, top: 40),
-              child: Text("Ayuda al planeta a ser un lugar mejor",
+              padding: EdgeInsets.only(right: 15, left: 15, top: 50),
+              child: Text("Espera a que le sea asignado un recolector",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 20)),
             ),

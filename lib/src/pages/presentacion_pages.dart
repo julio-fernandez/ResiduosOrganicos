@@ -8,9 +8,6 @@ class PresentacionPage extends StatefulWidget {
   static const kIcons = <Widget>[
     CardInicio(),
     CardGuiaUno(),
-    CardGuiaUno(),
-    CardGuiaUno(),
-    CardGuiaUno(),
     Center(
         child: Text(
       "Continuar",
@@ -28,7 +25,7 @@ class _PresentacionPageState extends State<PresentacionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Desechos organicos"),
+        title: Text("Residuos Orgánicos"),
       ),
       body: Container(
         decoration: BoxDecoration(

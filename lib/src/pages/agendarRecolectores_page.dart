@@ -28,7 +28,7 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Desechos organicos'),
+        title: Text('Residuos Orgánicos'),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -59,7 +59,9 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                         rows.add(_Row(
                           item.direccion,
                           Recolecciones.fechaFormatoCorrector(item.fechade),
-                          Recolecciones.fechaFormatoCorrector(item.fechahasta),
+                          (Recolecciones.fechaFormatoCorrector(item.fechahasta)
+                                  .substring(10) +
+                              " hrs"),
                           item.cantidad,
                           item.descripcion,
                           item.repetir,

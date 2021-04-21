@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/img/planet-earth-green.png'),
+        child: Image.asset('assets/icon/logoRes.png'),
       ),
     );
 
@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Desechos organicos'),
+        title: Text('Residuos Orgánicos'),
         actions: [
           IconButton(
               icon: Icon(Icons.info_outline),
@@ -178,12 +178,13 @@ class _LoginPageState extends State<LoginPage> {
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
+            SizedBox(height: 30.0),
             logo,
-            SizedBox(height: 48.0),
+            SizedBox(height: 60.0),
             labelUsr,
             SizedBox(height: 10.0),
             usuario,
-            SizedBox(height: 8.0),
+            SizedBox(height: 30.0),
             labelcontra,
             SizedBox(height: 10.0),
             password,

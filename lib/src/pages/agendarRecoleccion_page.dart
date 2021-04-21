@@ -232,7 +232,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Desechos organicos'),
+        title: Text('Residuos Orgánicos'),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -245,7 +245,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
             SizedBox(height: 20.0),
-            labelTitulo("Agendar recolección de desechos organicos"),
+            labelTitulo("Agendar recolección de Residuos Orgánicos"),
             SizedBox(height: 20.0),
             label("Direccion"),
             SizedBox(height: 10.0),

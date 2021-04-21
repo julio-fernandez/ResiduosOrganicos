@@ -76,7 +76,7 @@ class _RecolectoresListaState extends State<RecolectoresLista> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Desechos organicos'),
+        title: Text('Residuos Orgánicos'),
         actions: [
           IconButton(
               icon: Icon(Icons.logout),

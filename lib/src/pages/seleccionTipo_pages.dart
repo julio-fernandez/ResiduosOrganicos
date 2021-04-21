@@ -41,13 +41,11 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.home,
-                          color: Colors.white,
-                          size: 120.0,
+                        Image.asset(
+                          "assets/img/home.png",
                         ),
                         Text(
-                          'Recolecion de  desechos organicos',
+                          '\n\nDonar residuos',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -81,13 +79,12 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.directions_car,
-                        color: Colors.white,
-                        size: 120.0,
+                      Image.asset(
+                        "assets/img/recolecion-camion.png",
+                        height: 200,
                       ),
                       Text(
-                        'Recolector de  desechos organicos',
+                        'Recolectar Residuos Orgánicos',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

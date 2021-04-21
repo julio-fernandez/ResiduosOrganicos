@@ -24,7 +24,7 @@ class _RegistroPageState extends State<RegistroPage> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/logo.png'),
+        child: Image.asset('assets/icon/usricon.png'),
       ),
     );
 

@@ -16,7 +16,7 @@ int initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // await prefs.setInt("initScreen", 2);
+  // await prefs.setInt("initScreen", 10);
   // ignore: await_only_futures
   initScreen = await prefs.getInt("initScreen");
   print('initScreen $initScreen');
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         if (initScreen == 2) return "login";
         if (initScreen == 3) return "listaRecoleciones";
         if (initScreen == 4) return "listaRecolectores";
-        if (initScreen == 10) return "agendarRecoleccionPage";
+        if (initScreen == 10) return "selectorTipo";
       }()),
       routes: {
         '/': (BuildContext context) => PresentacionPage(),
