@@ -44,7 +44,7 @@ nop nop nop nop flutter pub pub add flutter_string_encryption
 
 ## Añadir a  android/app/src/main/AndroidManifest.xml
 ~~~
-
+<uses-permission android:name="android.permission.INTERNET" />
 <application
     ...
     android:usesCleartextTraffic="true"

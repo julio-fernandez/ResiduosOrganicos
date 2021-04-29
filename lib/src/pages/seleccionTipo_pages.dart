@@ -20,7 +20,7 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
             Expanded(
               flex: 5,
               child: Container(
-                  color: Colors.blue,
+                  color: Color.fromRGBO(117, 252, 20, 1),
                   alignment: Alignment.center,
                   child: TextButton(
                     onPressed: () async {
@@ -59,7 +59,7 @@ class _SelectorTipoPageState extends State<SelectorTipoPage> {
             Expanded(
               flex: 5,
               child: Container(
-                color: Colors.yellow,
+                color: Color.fromRGBO(19, 242, 133, 1),
                 child: TextButton(
                   onPressed: () async {
                     Usuario usr = Usuario.fromJson(

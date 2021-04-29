@@ -43,7 +43,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/plant.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -63,6 +63,7 @@ flutter:
     - assets/img/recolecion-camion.png
     - assets/icon/usricon.png
     - assets/icon/logoRes.png
+    - assets/icon/plant.png
     - assets/alucard.jpg
     - assets/logo.png
     - assets/Nunito.ttf

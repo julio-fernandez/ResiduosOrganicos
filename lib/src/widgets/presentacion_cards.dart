@@ -8,14 +8,12 @@ class CardInicio extends StatelessWidget {
     return Container(
       child: ListView(
         children: [
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.only(top: 25, bottom: 50),
-              child: Text(
-                "Residuos Orgánicos",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 50),
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 25, bottom: 50),
+            child: Text(
+              "Residuos Orgánicos",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 50),
             ),
           ),
           Container(
@@ -24,14 +22,12 @@ class CardInicio extends StatelessWidget {
               height: 200,
             ),
           ),
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.only(right: 15, left: 15, top: 60),
-              child: Text("Ayuda al planeta a ser un lugar mejor",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
-            ),
-          )
+          Container(
+            padding: EdgeInsets.only(right: 15, left: 15, top: 60),
+            child: Text("Ayuda al planeta a ser un lugar mejor",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+          ),
         ],
       ),
     );
@@ -46,14 +42,12 @@ class CardGuiaUno extends StatelessWidget {
     return Container(
       child: ListView(
         children: [
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.only(top: 40, bottom: 25),
-              child: Text(
-                "¿ Como ayudar a tu ciudad a ser un lugar mejor ?",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 40, bottom: 25),
+            child: Text(
+              "¿ Como ayudar a tu ciudad a ser un lugar mejor ?",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 25),
             ),
           ),
           Container(
@@ -97,13 +91,11 @@ class CardGuiaUno extends StatelessWidget {
               ],
             ),
           ),
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.only(right: 15, left: 15, top: 50),
-              child: Text("Espera a que le sea asignado un recolector",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
-            ),
+          Container(
+            padding: EdgeInsets.only(right: 15, left: 15, top: 50),
+            child: Text("Espera a que le sea asignado un recolector",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20)),
           ),
         ],
       ),

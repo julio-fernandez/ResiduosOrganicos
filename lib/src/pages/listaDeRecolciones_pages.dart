@@ -137,13 +137,14 @@ Widget _getEstado(int recolectorid, String fecha) {
   String estadoRec = "";
   Color colormsj;
   Color colortext;
-  if (recolectorid == 1) {
-    estadoRec = "En asignacion";
-    colormsj = Colors.grey;
-    colortext = Colors.white;
-  } else if (fecha == "2000-00-00 00:00:00") {
+
+  if (fecha.contains("2000-00-00 00:00:00")) {
     estadoRec = "Completa";
     colormsj = Colors.green;
+    colortext = Colors.white;
+  } else if (recolectorid == 1) {
+    estadoRec = "En asignacion";
+    colormsj = Colors.grey;
     colortext = Colors.white;
   } else {
     estadoRec = "Asignado";
