@@ -47,13 +47,21 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                 print("¿Es nulo?");
                 bool isnullRec = reco == null ? true : false;
                 print(isnullRec);
+                var fechahoy = DateTime.now();
+
                 if (!isnullRec) {
                   if (snapshot.hasData &&
                       snapshot.connectionState == ConnectionState.done) {
                     List<_Row> rows = [];
 
                     for (var item in snapshot.data) {
-                      if (item.fechahasta != "2000-00-00 00:00:00") {
+                      int anio = int.parse(item.fechahasta.substring(0, 4));
+                      int mes = int.parse(item.fechahasta.substring(5, 7));
+                      int dia = int.parse(item.fechahasta.substring(8, 10));
+                      var fechaRecoleccion = DateTime(anio, mes, dia);
+
+                      if (item.fechahasta != "2000-00-00 00:00:00" &&
+                          fechahoy.isBefore(fechaRecoleccion)) {
                         _listaRecol.add(item);
 
                         rows.add(_Row(
@@ -65,8 +73,8 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                           item.cantidad,
                           item.descripcion,
                           item.repetir,
-                          'Nombre usuario',
-                          'Puntuacion usuario',
+                          // 'Nombre usuario',
+                          // 'Puntuacion usuario',
                           item.recoleccionid,
                           item.usuarioid,
                           item.recolectorid,
@@ -86,8 +94,8 @@ class _AgendarRecolectoresPageState extends State<AgendarRecolectoresPage> {
                         DataColumn(label: Text('cantidad')),
                         DataColumn(label: Text('descripción')),
                         DataColumn(label: Text('Repetición')),
-                        DataColumn(label: Text('Nombre usuario')),
-                        DataColumn(label: Text('Puntuacion usuario')),
+                        // DataColumn(label: Text('Nombre usuario')),
+                        // DataColumn(label: Text('Puntuacion usuario')),
                       ],
                       source: dataSource = _DataSource(context, rows),
                     );
@@ -161,8 +169,8 @@ class _Row {
     this.valueD,
     this.valueE,
     this.valueF,
-    this.valueG,
-    this.valueH,
+    // this.valueG,
+    // this.valueH,
     this.recoleccionid,
     this.usuarioid,
     this.recolectorid,
@@ -174,8 +182,8 @@ class _Row {
   final String valueD;
   final String valueE;
   final String valueF;
-  final String valueG;
-  final String valueH;
+  // final String valueG;
+  // final String valueH;
   final int recoleccionid;
   final int usuarioid;
   final int recolectorid;
@@ -216,8 +224,8 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueD)),
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
-        DataCell(Text(row.valueG)),
-        DataCell(Text(row.valueH)),
+        // DataCell(Text(row.valueG)),
+        // DataCell(Text(row.valueH)),
       ],
     );
   }

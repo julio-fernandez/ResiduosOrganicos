@@ -22,12 +22,27 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
   TextEditingController txtControlerCantidad = new TextEditingController();
   TextEditingController txtControlerDescripcion = new TextEditingController();
 
+  var fechahoy;
+  var fechatomorrow;
+  var fechatomorrowCeros;
+
   String msjError = "";
   String msjFechade = "Seleccionar fecha";
   String msjFechahasta = "Seleccionar fecha de";
   DateVar datede = new DateVar.vacio();
   DateVar datehasta = new DateVar.vacio();
   bool isbtnHastaEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fechahoy = DateTime.now();
+    fechatomorrow = fechahoy.add(const Duration(days: 1));
+    fechatomorrowCeros =
+        DateTime(fechatomorrow.year, fechatomorrow.month, fechatomorrow.day);
+    print(fechatomorrowCeros);
+  }
+
   @override
   Widget build(BuildContext context) {
     final direccion = TextFormField(
@@ -63,12 +78,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
         onPressed: () {
           DatePicker.showDateTimePicker(context,
               showTitleActions: true,
-              minTime: DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  DateTime.now().hour,
-                  DateTime.now().minute),
+              minTime: fechatomorrowCeros,
               theme: DatePickerTheme(
                   headerColor: Colors.green,
                   // backgroundColor: Colors.black,
@@ -93,7 +103,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
             datede = DateVar(
                 date.year, date.month, date.day, date.hour, date.minute);
             setState(() {});
-          }, currentTime: DateTime.now(), locale: LocaleType.es);
+          }, currentTime: fechatomorrowCeros, locale: LocaleType.es);
         },
         style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -112,8 +122,7 @@ class _AgendarRecoleccionPageState extends State<AgendarRecoleccionPage> {
                 print(
                     'Tiempo limite = ${datede.anio}-${datede.mes}-${datede.dia} ${datede.hora}:${datede.minuto}');
                 DatePicker.showDateTimePicker(context,
-                    minTime: DateTime(datede.anio, datede.mes, datede.dia,
-                        datede.hora, datede.minuto),
+                    minTime: DateTime(datede.anio, datede.mes, datede.dia),
                     maxTime:
                         DateTime(datede.anio, datede.mes, datede.dia, 23, 59),
                     showTitleActions: true,

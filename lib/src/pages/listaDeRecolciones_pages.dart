@@ -138,12 +138,26 @@ Widget _getEstado(int recolectorid, String fecha) {
   Color colormsj;
   Color colortext;
 
+  int anio = int.parse(fecha.substring(0, 4));
+  int mes = int.parse(fecha.substring(5, 7));
+  int dia = int.parse(fecha.substring(8, 10));
+  var fechahoy = DateTime.now();
+  var fechaRecoleccion = DateTime(anio, mes, dia);
+
+  if (!fecha.contains("2000-00-00 00:00:00"))
+    print(
+        "Fecha rec = $anio, $mes, $dia,  fecha actual: ${fechahoy.year}-${fechahoy.month}-${fechahoy.day} recolectorid= $recolectorid");
+
   if (fecha.contains("2000-00-00 00:00:00")) {
     estadoRec = "Completa";
     colormsj = Colors.green;
     colortext = Colors.white;
+  } else if (fechahoy.isAfter(fechaRecoleccion)) {
+    estadoRec = "No asignada a tiempo";
+    colormsj = Colors.red;
+    colortext = Colors.black;
   } else if (recolectorid == 1) {
-    estadoRec = "En asignacion";
+    estadoRec = "En asignación";
     colormsj = Colors.grey;
     colortext = Colors.white;
   } else {

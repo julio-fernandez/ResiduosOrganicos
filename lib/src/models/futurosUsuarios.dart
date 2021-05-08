@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:residuos/src/models/recolecciones.dart';
 import 'package:residuos/src/models/shared_preferences.dart';
@@ -42,9 +43,11 @@ class FuturosUsr {
   }
 
   static Future<Usuario> getUsuario(String usr, String pwd) async {
+    var response;
     var url =
         Uri.http(ApiEndPointData.endPoint, '/api/usuarios/validar/$usr/$pwd');
-    final response = await http.get(url);
+
+    response = await http.get(url);
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
