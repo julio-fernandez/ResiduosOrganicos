@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/shared_preferences.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -80,8 +82,11 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           if (_validarTextField(txtControlerPwd.text) &&
               _validarTextField(txtControlerUsr.text)) {
-            var usuario = await FuturosUsr.getUsuario(
-                txtControlerUsr.text, txtControlerPwd.text);
+            var pwd =
+                sha1.convert(utf8.encode(txtControlerPwd.text)).toString();
+
+            var usuario =
+                await FuturosUsr.getUsuario(txtControlerUsr.text, pwd);
 
             if (usuario != null) {
               msjError = "";

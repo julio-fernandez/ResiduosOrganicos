@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:residuos/src/models/futurosUsuarios.dart';
 import 'package:residuos/src/models/shared_preferences.dart';
 import 'package:residuos/src/models/usuarios.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 class RegistroPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -117,7 +119,8 @@ class _RegistroPageState extends State<RegistroPage> {
           } else if (txtControlerPwd1.text != txtControlerPwd2.text) {
             msjError = "Las contraseñas no coinciden";
           } else {
-            String pwd = txtControlerPwd1.text;
+            String pwd =
+                sha1.convert(utf8.encode(txtControlerPwd1.text)).toString();
             String usrName = txtControlerUsr.text;
             String telefono = txtControlerTelefono.text;
             int rol = 0;

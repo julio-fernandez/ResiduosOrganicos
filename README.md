@@ -1,69 +1,26 @@
-# residuos
-
-Revisar
-https://material.io/components/data-tables/flutter#data-tables-information
+# Gestión de residuos orgánicos de florerías, fruterías y verdulerías en el municipio de Teziutlán
 
 
-<hr>
-
-## Comandos de terminal para añadir librerias
-
-##### Para actualizar icono predefinido
-
-~~~ 
-flutter pub pub add flutter_launcher_icons
-~~~
-
-##### NO USADO --Para instalar libreria responsiva--
-
-~~~
-flutter pub pub add responsive_grid
-~~~
-
-##### Para instalar libreria datos persistentes
-
-~~~
-flutter pub pub add shared_preferences
-~~~
-
-###Instalar http
-~~~
-flutter pub pub add http
-~~~
-
-###Instalar date time picker
-~~~
-flutter pub pub add flutter_datetime_picker
-~~~
-
-###Instalar encriptador contraseñas ----no usado---
-~~~
-nop nop nop nop flutter pub pub add flutter_string_encryption 
-~~~
-<hr>
-
-## Añadir a  android/app/src/main/AndroidManifest.xml
-~~~
-<uses-permission android:name="android.permission.INTERNET" />
-<application
-    ...
-    android:usesCleartextTraffic="true"
-    ...   >
-~~~
-
-<hr>
-
-## Otros comandos
-
-##### Para actualizar icono de la app cuando sea necesario cambiarlo
-
-~~~ 
-flutter pub run flutter_launcher_icons:main
-~~~
+## Descripción del proyecto
 
 
-###Compilar apk
- 
- ~~~
-flutter build apk --split-per-abi
-~~~
+<img src="GithubDocs/Logo.png" align="right" >
+
+<p align="justify">
+El presente proyecto  tuvo como propósito diseñar una aplicación móvil dirigida al reciclaje de desechos orgánicos en la ciudad de Teziutlán, Puebla, como los residuos de florerías, fruterias e incluso algunos hogares. Se hizo una investigación previa para conocer la viabilidad del proyecto, tomando en cuenta las problemáticas:
+</p>
+
+
+# Maquetado
+
+## Balsamic
+<img src="GithubDocs/Balsamic/maqueta 1.png" align="right" >
+
+## Figma
+
+<img height=350 src="GithubDocs/Figma/info1.png" align="right" >
+<img height=350 src="GithubDocs/Figma/info2.png" align="right" >
+<img height=350 src="GithubDocs/Figma/info3.png" align="right" >
+<img height=350 src="GithubDocs/Figma/login.png" align="right" >
+<img width=600 src="GithubDocs/Figma/rol.png" align="right" >
+<img width=600 src="GithubDocs/Figma/Recolector.png" align="right" >
